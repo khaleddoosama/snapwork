@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('username')->unique()->nullable();
-            $table->string('slug')->unique()->nullable();
+            $table->string('name', 100);
+            $table->string('username', 50)->unique()->nullable();
+            $table->string('slug', 50)->unique()->nullable();
 
             $table->text('bio')->nullable();
-            $table->string('email')->unique();
+            $table->string('email', 100)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
@@ -26,24 +26,24 @@ return new class extends Migration
             $table->string('picture')->nullable();
             $table->string('cover')->nullable();
             $table->string('video')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('phone', 20)->nullable();
             $table->string('country')->nullable();
             $table->string('address')->nullable();
-            $table->string('gender')->nullable();
+            $table->string('gender', 10)->nullable();
             $table->date('dob')->nullable()->comment('Date of Birth');
-            $table->string('postalcode')->nullable();
-            $table->string('city')->nullable();
+            $table->string('postalcode', 10)->nullable();
+            $table->string('city', 50)->nullable();
             $table->string('national_id')->nullable();
             $table->string('national_id_face')->nullable();
             $table->string('national_id_back')->nullable();
             $table->string('national_id_selfie')->nullable();
 
-            $table->string('job_title')->nullable();
-            $table->enum('role', ['client', 'freelancer', 'admin'])->default('freelancer');
-            $table->timestamp('last_login')->nullable();
+            $table->string('job_title', 100)->nullable();
+            $table->enum('role', ['client', 'freelancer', 'admin'])->default('freelancer')->index();
+            $table->timestamp('last_login')->nullable()->index();
             $table->float('balance')->default(0);
             $table->integer('status')->default(0)->comment('0: pending, 1: approved, 2: rejected, 3: removed');
-            $table->timestamp('approved_at')->default(now());
+            $table->timestamp('approved_at')->nullable();
             $table->timestamp('rejected_at')->nullable();
             $table->timestamp('removed_at')->nullable();
             $table->text('rejection_reason')->nullable();

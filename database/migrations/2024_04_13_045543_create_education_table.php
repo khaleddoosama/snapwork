@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('specializations', function (Blueprint $table) {
+        Schema::create('education', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->string('slug', 100);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('school');
+            $table->date('from_date')->nullable();
+            $table->date('to_date')->nullable();
+            $table->string('degree')->nullable();
+            $table->string('major')->nullable();
             $table->text('description')->nullable();
-            $table->string('icon')->nullable();
-
-            $table->integer('status')->default(0)->comment('0: active, 1: inactive');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('specializations');
+        Schema::dropIfExists('education');
     }
 };

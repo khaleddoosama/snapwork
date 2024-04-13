@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reviews', function (Blueprint $table) {
+        Schema::create('bookmarks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('subject_id')->constrained('users')->onDelete('cascade');
-            $table->float('rating');
-            $table->text('feedback');
-            $table->dateTime('timestamp');
+            $table->foreignId('job_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+
+            // Composite unique key
+            $table->unique(['job_id', 'freelancer_id'], 'job_freelancer_bookmark_unique');
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('bookmarks');
     }
 };

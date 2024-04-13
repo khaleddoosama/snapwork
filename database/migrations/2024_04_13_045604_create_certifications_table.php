@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('specializations', function (Blueprint $table) {
+        Schema::create('certifications', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->string('slug', 100);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->string('issuer', 50);
+            $table->date('issue_date')->nullable();
+            $table->string('url')->nullable();
             $table->text('description')->nullable();
-            $table->string('icon')->nullable();
-
-            $table->integer('status')->default(0)->comment('0: active, 1: inactive');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('specializations');
+        Schema::dropIfExists('certifications');
     }
 };
