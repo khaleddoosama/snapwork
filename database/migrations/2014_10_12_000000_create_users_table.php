@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('cover')->nullable();
             $table->string('video')->nullable();
             $table->string('phone', 20)->nullable();
+            $table->timestamp('phone_verified_at')->nullable();
             $table->string('country')->nullable();
             $table->string('address')->nullable();
             $table->string('gender', 10)->nullable();

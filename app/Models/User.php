@@ -41,7 +41,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
-    
+
     public function sluggable(): array
     {
         return [
@@ -51,6 +51,7 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
+    /* Scopes */
     // scope student
     public function scopeStudent($query)
     {
@@ -85,6 +86,49 @@ class User extends Authenticatable implements JWTSubject
     public function scopeStudentInactive($query)
     {
         return $query->where('role', 'student')->where('status', 2)->orWhere('status', 3);
+    }
+
+    /* Relations */
+    // relation specialization
+    public function specialization()
+    {
+        return $this->belongsTo(Specialization::class);
+    }
+
+    // relation skills
+    public function skills()
+    {
+        return $this->hasMany(Skill::class);
+    }
+
+    // relation Languages
+    public function languages()
+    {
+        return $this->hasMany(Language::class);
+    }
+
+    // relation Projects
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    // relation Educations
+    public function educations()
+    {
+        return $this->hasMany(Education::class);
+    }
+
+    // relation Employment
+    public function employments()
+    {
+        return $this->hasMany(EmploymentHistory::class, 'user_id', 'id');
+    }
+
+    // relation Certifications
+    public function certifications()
+    {
+        return $this->hasMany(Certification::class);
     }
 
     /* methods */

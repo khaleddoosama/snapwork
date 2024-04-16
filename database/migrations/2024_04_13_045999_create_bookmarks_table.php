@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Composite unique key
-            $table->unique(['job_id', 'freelancer_id'], 'job_freelancer_bookmark_unique');
+            $table->unique(['job_id', 'user_id'], 'job_freelancer_bookmark_unique');
         });
     }
 

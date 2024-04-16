@@ -42,22 +42,31 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-            'username' => 'required|string|between:2,100|alpha_dash|unique:users',
-            'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|confirmed|min:6',
-        ]);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|between:2,100',
+                'username' => 'required|string|between:2,100|alpha_dash|unique:users',
+                'email' => 'required|string|email|max:100|unique:users',
+                'specialization_id' => 'required|exists:specializations,id',
+                'role' => 'required|in:client,freelancer',
+                'job_title' => 'nullable|string|between:2,100',
+                'gender' => 'required|in:male,female',
+                'dob' => 'nullable|date',
+                'password' => 'required|string|confirmed|min:8',
+            ]);
 
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->errors()->first(), 400);
+            if ($validator->fails()) {
+                return $this->apiResponse(null, $validator->errors()->first(), 400);
+            }
+            $user = User::create(array_merge(
+                $validator->validated(),
+                ['password' => bcrypt($request->password)]
+            ));
+
+            return $this->apiResponse(new UserResource($user), 'User registered successfully', 201);
+        } catch (Exception $e) {
+            return $this->apiResponse(null, $e->getMessage(), 400);
         }
-        $user = User::create(array_merge(
-            $validator->validated(),
-            ['password' => bcrypt($request->password)]
-        ));
-
-        return $this->apiResponse(new UserResource($user), 'User registered successfully', 201);
     }
 
 
@@ -86,9 +95,19 @@ class AuthController extends Controller
 
             $attributes = Validator::make($request->all(), [
                 'name' => 'required|string|between:2,100',
-                'username' => 'required|string|alpha_dash|between:2,100|unique:users,username,' . $user->id,
+                // 'username' => 'required|string|alpha_dash|between:2,100|unique:users,username,' . $user->id,
                 'email' => 'required|string|email|max:100|unique:users,email,' . $user->id,
-                'password' => 'sometimes|required|string|confirmed|min:6',
+                'job_title' => 'nullable|string|between:2,100',
+                'gender' => 'required|in:male,female',
+                'phone' => 'nullable|string|between:2,100',
+                'bio' => 'nullable|string|between:2,100',
+                'country' => 'nullable|string|between:2,100',
+                'city' => 'nullable|string|between:2,100',
+                'address' => 'nullable|string|between:2,100',
+                'postalcode' => 'nullable|string|between:2,100',
+                'dob' => 'nullable|date',
+                'specialization_id' => 'required|exists:specializations,id',
+                // 'password' => 'sometimes|required|string|confirmed|min:6',
             ]);
 
             $user->update($attributes->validated());
@@ -116,7 +135,7 @@ class AuthController extends Controller
         $data = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'expires_in' => auth('api')->factory()->getTTL() * 60 * 24, // 60 minutes * 24 hours = 1 day
             'user' => new UserResource(auth('api')->user())
         ];
         return $this->apiResponse($data, 'ok', 200);

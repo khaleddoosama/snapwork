@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('company');
-            $table->string('city', 50);
-            $table->string('country', 50);
-            $table->string('title', 50);
-            $table->date('from_date')->nullable();
-            $table->date('to_date')->nullable();
+            $table->string('position', 50);
+            $table->string('city', 50)->nullable();
+            $table->string('country', 50)->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });

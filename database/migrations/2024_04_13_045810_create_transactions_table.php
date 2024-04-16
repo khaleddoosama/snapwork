@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade')->index();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->float('amount');
             $table->string('currency',10)->default('EGP');
             $table->string('transaction_type',15)->index();

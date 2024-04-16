@@ -5,6 +5,7 @@ namespace App\Traits;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 
 trait UploadTrait
@@ -19,8 +20,7 @@ trait UploadTrait
         // Ensure the directory exists or create it
         $this->ensureDirectoryExists($folderName);
 
-        // Image::make($picture)->resize($width, $height)->save(public_path("{$path}"));
-        Image::read($picture)->resize($width, $height)->save(public_path("{$path}"));
+        Image::read($picture)->resize($width, $height)->save(); // save in storage
 
         return $path;
     }
@@ -41,6 +41,10 @@ trait UploadTrait
     {
         if (File::exists(public_path($path))) {
             File::delete(public_path($path));
+        }
+        // remove it from storage
+        if (Storage::exists($path)) {
+            Storage::delete($path);
         }
     }
 
