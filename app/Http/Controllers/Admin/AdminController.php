@@ -28,7 +28,7 @@ class AdminController extends Controller
     // home
     public function home()
     {
-
+        
         return view('admin.home');
     }
 
@@ -47,6 +47,7 @@ class AdminController extends Controller
 
         $user->update($data);
         Toastr::success(__('messages.user_profile_updated'), __('status.success'));
+        session()->flash('toastr:success', __('messages.user_profile_updated'));
         return redirect()->back();
     }
 
@@ -58,6 +59,7 @@ class AdminController extends Controller
 
         $user->update(['password' => bcrypt($data['password'])]);
         Toastr::success(__('messages.user_password_updated'), __('status.success'));
+        session()->flash('toastr:success', __('messages.user_profile_updated'));
         return redirect()->back();
     }
 
