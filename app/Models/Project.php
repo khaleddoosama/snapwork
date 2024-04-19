@@ -39,4 +39,6 @@ class Project extends Model
 
         $this->attributes['thumbnail'] = $this->uploadImage($thumbnail, $folderName, 400, 400);
     }
+
+    
 }

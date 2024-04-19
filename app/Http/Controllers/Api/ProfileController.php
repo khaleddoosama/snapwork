@@ -127,12 +127,16 @@ class ProfileController extends Controller
             }
 
             $user = Auth::user();
-            // remove old educations
-            $user->educations()->delete();
+            // Update existing educations or create new ones
+            foreach ($request->educations as $educationData) {
+                $employment = $user->educations()->updateOrCreate(
+                    ['id' => $educationData['id'] ?? null], // Assuming 'id' is a unique identifier for educations
+                    $educationData
+                );
+            }
 
-            // add new educations
-            $user->educations()->createMany($request->educations);
-
+            // Remove any educations that are not in the new list
+            $user->educations()->whereNotIn('id', collect($request->educations)->pluck('id'))->delete();
 
             return $this->apiResponse(new UserResource($user), 'Educations updated successfully', 200);
         } catch (Exception $e) {
@@ -160,11 +164,19 @@ class ProfileController extends Controller
             }
 
             $user = Auth::user();
-            // remove old employments
-            $user->employments()->delete();
 
-            // add new employments
-            $user->employments()->createMany($request->employments);
+            $arr = [];
+            // Update existing projects or create new ones
+            foreach ($request->employments as $employmentData) {
+                $employment = $user->employments()->updateOrCreate(
+                    ['id' => $employmentData['id'] ?? null], // Assuming 'id' is a unique identifier for employments
+                    $employmentData
+                );
+                $arr[] = $employment->id;
+            }
+
+            // Remove any projects that are not in the new list
+            $user->employments()->whereNotIn('id', $arr)->delete();
 
             return $this->apiResponse(new UserResource($user), 'Employments updated successfully', 200);
         } catch (Exception $e) {
@@ -175,34 +187,39 @@ class ProfileController extends Controller
     }
 
     // update projects
-    public function updateProjects(Request $request)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'projects' => 'required|array',
-                'projects.*.title' => 'required|string',
-                'projects.*.description' => 'required|string',
-                'projects.*.url' => 'nullable|url',
-                'projects.*.technologies' => 'nullable|array',
-                'projects.*.completion_date' => 'nullable|date',
-                'projects.*.thumbnail' => 'nullable|string',
-                'projects.*.attachments' => 'nullable|array',
-            ]);
-            if ($validator->fails()) {
-                return $this->apiResponse(null, $validator->errors()->first(), 422);
-            }
+    // public function updateProjects(Request $request)
+    // {
 
-            $user = Auth::user();
-            // remove old projects
-            $user->projects()->delete();
+    //     try {
+    //         $validator = Validator::make($request->all(), [
+    //             'projects' => 'required|array',
+    //             'projects.*.title' => 'required|string',
+    //             'projects.*.description' => 'required|string',
+    //             'projects.*.url' => 'nullable|url',
+    //             'projects.*.technologies' => 'nullable|array',
+    //             'projects.*.completion_date' => 'nullable|date',
+    //             'projects.*.thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //             'projects.*.attachments' => 'nullable|array',
+    //         ]);
+    //         if ($validator->fails()) {
+    //             return $this->apiResponse(null, $validator->errors()->first(), 422);
+    //         }
 
-            // add new projects
-            $user->projects()->createMany($request->projects);
-            return $this->apiResponse(new UserResource($user), 'Projects updated successfully', 200);
-        } catch (Exception $e) {
-            return $this->apiResponse(null, $e->getMessage(), 500);
-        }
-    }
+    //         $user = Auth::user();
+
+    //         // Update existing projects or create new ones
+    //         foreach ($request->projects as $projectData) {
+    //             $project = $user->projects()->updateOrCreate(
+    //                 ['id' => $projectData['id'] ?? null], // Assuming 'id' is a unique identifier for projects
+    //                 $projectData
+    //             );
+    //         }
+
+    //         return $this->apiResponse(new UserResource($user), 'Projects updated successfully', 200);
+    //     } catch (Exception $e) {
+    //         return $this->apiResponse(null, $e->getMessage(), 500);
+    //     }
+    // }
 
     // update certifications
     public function updateCertifications(Request $request)

@@ -55,12 +55,13 @@ trait UploadTrait
         foreach ($attachments as $attachment) {
             $name_gen = hexdec(uniqid()) . '.' . $attachment->getClientOriginalExtension();
             $path = "uploads/{$folderName}/{$name_gen}";
-            $attachment->move(public_path("uploads/{$folderName}/"), $name_gen);
+            // $attachment->move(public_path("uploads/{$folderName}/"), $name_gen);
+            $attachment->storeAs("uploads/{$folderName}/", $name_gen);
             $attachmentData[] = $path;
         }
         // Encode the attachment data as JSON
 
-        // dd($attachmentData);
+        dd($attachmentData);
         return $attachmentData;
     }
 

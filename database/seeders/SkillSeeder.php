@@ -19,17 +19,16 @@ class SkillSeeder extends Seeder
 
         DB::table('skills')->insert([
             [
-                'user_id' => 1,
                 'name' => 'PHP',
             ],
             [
-                'user_id' => 1,
                 'name' => 'Laravel',
             ],
             [
-                'user_id' => 1,
                 'name' => 'SQL',
             ],
         ]);
+
+        
     }
 }
