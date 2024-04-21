@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\Skill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
@@ -58,12 +60,22 @@ class ProfileController extends Controller
             $user_skills = $user->skills()->pluck('name')->toArray();
 
             $diff_skills = array_diff($skills, $user_skills);
-            $user->skills()->whereNotIn('name', $skills)->delete();
+
+            // $user->skills->whereNotIn('name', $skills)->detach();
+            // remove unselected skill
+            $user->skills()->detach($user->skills->whereNotIn('name', $skills)->pluck('id')->toArray());
+            // return ($user->skills);
 
             if (count($diff_skills) > 0) {
-                $user->skills()->createMany(array_map(function ($skill) {
-                    return ['name' => $skill];
-                }, $diff_skills));
+                foreach ($diff_skills as $skill) {
+                    $skill_exist = Skill::where('name', $skill)->first();
+
+                    if (!$skill_exist) {
+                        $skill_exist = Skill::create(['name' => $skill]);
+                    }
+
+                    $user->skills()->attach($skill_exist);
+                }
             }
 
             return $this->apiResponse(new UserResource($user), 'Skills updated successfully', 200);

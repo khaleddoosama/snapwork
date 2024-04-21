@@ -99,7 +99,8 @@ class User extends Authenticatable implements JWTSubject
     // relation skills
     public function skills()
     {
-        return $this->hasMany(Skill::class);
+        // return $this->hasMany(Skill::class);
+        return $this->belongsToMany(Skill::class, 'user_skills', 'user_id', 'skill_id');
     }
 
     // relation Languages
