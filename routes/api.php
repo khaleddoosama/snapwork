@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\LectureController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\SectionController;
@@ -42,4 +43,8 @@ Route::group([
 
 Route::middleware('jwt.verify')->group(function () {
     Route::get('/specializations', [ProfileController::class, 'getSpecializations']);
+
+    Route::post('/jobs', [JobController::class, 'store']);
+    Route::put('/jobs/{job}', [JobController::class, 'update']);
+    Route::get('/jobs/{job}', [JobController::class, 'show']);
 });

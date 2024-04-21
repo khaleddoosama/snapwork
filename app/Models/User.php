@@ -133,6 +133,12 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Certification::class);
     }
 
+    // relation Jobs
+    public function jobs()
+    {
+        return $this->hasMany(Job::class, 'client_id', 'id');
+    }
+
     /* methods */
     // set Picture Attribute
     public function setPictureAttribute(UploadedFile $picture)
