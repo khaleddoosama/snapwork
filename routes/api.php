@@ -41,4 +41,5 @@ Route::group([
 
 
 Route::middleware('jwt.verify')->group(function () {
+    Route::get('/specializations', [ProfileController::class, 'getSpecializations']);
 });

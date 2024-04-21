@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SpecializationResource;
 use App\Http\Resources\UserResource;
 use App\Models\Skill;
+use App\Models\Specialization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -61,10 +63,8 @@ class ProfileController extends Controller
 
             $diff_skills = array_diff($skills, $user_skills);
 
-            // $user->skills->whereNotIn('name', $skills)->detach();
             // remove unselected skill
             $user->skills()->detach($user->skills->whereNotIn('name', $skills)->pluck('id')->toArray());
-            // return ($user->skills);
 
             if (count($diff_skills) > 0) {
                 foreach ($diff_skills as $skill) {
@@ -261,5 +261,11 @@ class ProfileController extends Controller
         } catch (Exception $e) {
             return $this->apiResponse(null, $e->getMessage(), 500);
         }
+    }
+
+    public function getSpecializations()
+    {
+        $specializations = Specialization::get();
+        return $this->apiResponse(SpecializationResource::collection($specializations), 'Specializations fetched successfully', 200);
     }
 }
