@@ -7,7 +7,7 @@ use Illuminate\Validation\ValidationException;
 
 class ApplicationService
 {
-    // store job
+    // store application
     public function save(array $data)
     {
         $job = auth()->user()->applications()->create($data);

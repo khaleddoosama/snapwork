@@ -151,6 +151,12 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Application::class, 'freelancer_id', 'id');
     }
 
+    // relation Bookmarks
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
     /* methods */
     // set Picture Attribute
     public function setPictureAttribute(UploadedFile $picture)

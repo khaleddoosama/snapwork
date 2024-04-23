@@ -11,7 +11,7 @@ class BookmarkRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class BookmarkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            // job_id, user_id must be unique
+            'job_id' => 'required|exists:jobs,id|unique:bookmarks,job_id,NULL,id,user_id,' . auth()->user()->id,
+            'user_id' => 'exists:users,id'
         ];
+    }
+
+    public function validated($key = null, $default = null)
+    {
+        $data = parent::validated();
+        $data['user_id'] = auth()->user()->id;
+
+        return $data;
     }
 }

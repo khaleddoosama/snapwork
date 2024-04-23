@@ -3,23 +3,28 @@
 namespace App\Services\Api;
 
 use App\Models\Application;
+use App\Models\Bookmark;
 use Illuminate\Validation\ValidationException;
 
-class ApplicationService
+class BookmarkService
 {
 
 
-    // store job
-    public function save(array $data)
+    public function get()
     {
-        $job = auth()->user()->applications()->create($data);
-        return $job;
+        $bookmarks = Bookmark::where('user_id', auth()->user()->id)->get();
+        return $bookmarks;
     }
 
-    // update job
-    public function update(array $data, Application $job)
+    // store application
+    public function save(array $data)
     {
-        $job->update($data);
-        return $job;
+        $bookmark = Bookmark::where('job_id', $data['job_id'])->where('user_id', auth()->user()->id)->first();
+        if (!$bookmark) {
+            $bookmark = Bookmark::create($data);
+        } else {
+            $bookmark->update($data);
+        }
+        return $bookmark;
     }
 }

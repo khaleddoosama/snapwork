@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ApplicationController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BookmarkController;
 use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\ProfileController;
@@ -53,4 +54,9 @@ Route::middleware('jwt.verify')->group(function () {
 
     // Applications
     Route::post('/applications', [ApplicationController::class, 'store']);
+
+    // bookmarks
+    Route::get('/bookmarks', [BookmarkController::class, 'index']);
+    Route::post('/bookmarks', [BookmarkController::class, 'store']);
+    Route::delete('/bookmarks/{bookmark}', [BookmarkController::class, 'destroy']);
 });
