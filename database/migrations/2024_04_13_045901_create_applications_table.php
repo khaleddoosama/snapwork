@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('duration'); // Duration in days, assuming integer value is suitable
             $table->text('cover_letter');
             $table->json('attachments')->nullable();
-            $table->string('status', 15);
+            $table->string('status', 15)->nullable();
             $table->timestamps();
 
             // Composite unique key

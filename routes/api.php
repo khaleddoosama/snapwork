@@ -1,13 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\ApplicationController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\JobController;
-use App\Http\Controllers\Api\LectureController;
 use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\Api\SectionController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,4 +50,7 @@ Route::middleware('jwt.verify')->group(function () {
 
     // invitations
     Route::post('/invitations', [InvitationController::class, 'store']);
+
+    // Applications
+    Route::post('/applications', [ApplicationController::class, 'store']);
 });

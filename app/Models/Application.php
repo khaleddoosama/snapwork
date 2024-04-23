@@ -10,4 +10,14 @@ class Application extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function job()
+    {
+        return $this->belongsTo(Job::class);
+    }
+
+    public function freelancer()
+    {
+        return $this->belongsTo(User::class, 'freelancer_id');
+    }
 }

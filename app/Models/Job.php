@@ -28,4 +28,9 @@ class Job extends Model
         return $this->belongsTo(Specialization::class, 'specialization_id');
     }
 
+    public function applications()
+    {
+        return $this->hasMany(Application::class, 'job_id');
+    }
+
 }

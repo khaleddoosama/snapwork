@@ -139,6 +139,18 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Job::class, 'client_id', 'id');
     }
 
+    // relation Invitations
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
+    }
+
+    // relation Applications
+    public function applications()
+    {
+        return $this->hasMany(Application::class, 'freelancer_id', 'id');
+    }
+
     /* methods */
     // set Picture Attribute
     public function setPictureAttribute(UploadedFile $picture)

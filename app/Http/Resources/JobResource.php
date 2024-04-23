@@ -24,7 +24,8 @@ class JobResource extends JsonResource
             'expected_budget' => $this->expected_budget,
             'expected_duration' => $this->expected_duration,
             'attachments' => $this->attachments,
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
+            'applications' => ApplicationResource::collection($this->applications),
         ];
     }
 }
