@@ -18,17 +18,14 @@ class UserSeeder extends Seeder
         // Define the path to the folder you want to delete
         $folderPath = public_path('uploads/user/pictures');
         $folderPath2 = public_path('uploads/admin/pictures');
-
         // Check if the folder exists
         if (File::isDirectory($folderPath)) {
             File::cleanDirectory($folderPath);
         }
-
         // Check if the folder exists
         if (File::isDirectory($folderPath2)) {
             File::cleanDirectory($folderPath2);
         }
-
         DB::table('users')->insert([
             [
                 'name' => 'name admin',
@@ -63,7 +60,6 @@ class UserSeeder extends Seeder
         ]);
         $admin = User::find(1);
         $admin->assignRole('Super Admin');
-
         DB::table('user_skills')->insert([
             [
                 'user_id' => 1,

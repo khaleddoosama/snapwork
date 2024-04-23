@@ -21,6 +21,13 @@ class JobController extends Controller
         $this->jobService = $jobService;
     }
 
+    public function index($specialization_id = null)
+    {
+
+        $jobs = $this->jobService->getAll($specialization_id);
+        return $this->apiResponse(JobResource::collection($jobs), 'Jobs fetched successfully', 200);
+    }
+
     // store
     public function store(JobRequest $request)
     {
