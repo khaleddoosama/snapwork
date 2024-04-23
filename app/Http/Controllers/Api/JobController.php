@@ -35,29 +35,21 @@ class JobController extends Controller
         }
     }
 
-
     // show
     public function show(Job $job)
     {
 
-        if ($job) {
-            return $this->apiResponse(new JobResource($job), 'Job found', 200);
-        } else {
-            return $this->apiResponse(null, 'Job not found', 404);
-        }
+        return $this->apiResponse(new JobResource($job), 'Job found', 200);
     }
 
     // update
     public function update(JobRequest $request, Job $job)
     {
-        try {
-            $data = $request->validated();
 
-            $job = $this->jobService->update($data, $job);
+        $data = $request->validated();
 
-            return $this->apiResponse(new JobResource($job), 'Job updated successfully', 200);
-        } catch (\Exception $e) {
-            return $this->apiResponse(null, $e->getMessage(), 400);
-        }
+        $job = $this->jobService->update($data, $job);
+
+        return $this->apiResponse(new JobResource($job), 'Job updated successfully', 200);
     }
 }
