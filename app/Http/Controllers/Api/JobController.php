@@ -38,7 +38,6 @@ class JobController extends Controller
     // show
     public function show(Job $job)
     {
-
         return $this->apiResponse(new JobResource($job), 'Job found', 200);
     }
 
