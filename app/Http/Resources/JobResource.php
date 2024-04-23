@@ -17,6 +17,7 @@ class JobResource extends JsonResource
         return [
             'id' => $this->id,
             'client' => new UserResource($this->client),
+            'specialization' => new SpecializationResource($this->specialization),
             'title' => $this->title,
             'description' => $this->description,
             'required_skills' => $this->required_skills,

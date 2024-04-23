@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('expected_duration');
             $table->json('attachments')->nullable();
             $table->foreignId('client_id')->constrained('users')->onDelete('cascade')->index();
+            $table->foreignId('specialization_id')->constrained('specializations')->onDelete('cascade');
             $table->timestamps();
         });
     }

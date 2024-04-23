@@ -50,14 +50,14 @@ class JobController extends Controller
     // update
     public function update(JobRequest $request, Job $job)
     {
-        if ($job) {
+        try {
             $data = $request->validated();
 
             $job = $this->jobService->update($data, $job);
 
             return $this->apiResponse(new JobResource($job), 'Job updated successfully', 200);
-        } else {
-            return $this->apiResponse(null, 'Job not found', 404);
+        } catch (\Exception $e) {
+            return $this->apiResponse(null, $e->getMessage(), 400);
         }
     }
 }

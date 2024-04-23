@@ -2,16 +2,28 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Exceptions\CustomAuthorizationException;
 use App\Http\Controllers\Api\ApiResponseTrait;
+use Flasher\Laravel\Http\Request;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class JobRequest extends FormRequest
 {
     use ApiResponseTrait;
     public function authorize(): bool
     {
-        return true;
+        // if method is post, then must check the user is logged in
+        // if method is put, then must check the user is logged in and the user is the owner of the job
+        if ($this->isMethod('post')) {
+            return true;
+        } else if ($this->isMethod('put')) {
+            return auth()->check() && auth()->user()->id == $this->job->client_id;
+        }
+
+        return false;
     }
 
 
@@ -25,6 +37,7 @@ class JobRequest extends FormRequest
             'expected_duration' => ['required', 'integer'],
             'attachments' => ['nullable', 'array'],
             'client_id' => 'exists:users,id',
+            'specialization_id' => 'exists:specializations,id',
             // 'attachments.*' => 'file',
         ];
     }
@@ -35,19 +48,5 @@ class JobRequest extends FormRequest
         $data['client_id'] = auth()->user()->id;
 
         return $data;
-    }
-
-    /**
-     * Handle a failed validation attempt.
-     *
-     * @param \Illuminate\Contracts\Validation\Validator $validator
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
-    {
-        // throw new ValidationException($validator, response()->json($validator->errors(), 422));
-        throw new ValidationException($validator, $this->apiResponse(null, $validator->errors(), 422));
     }
 }
