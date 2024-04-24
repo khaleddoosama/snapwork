@@ -21,6 +21,19 @@ return new class extends Migration
             $table->json('attachments')->nullable();
             $table->foreignId('client_id')->constrained('users')->onDelete('cascade')->index();
             $table->foreignId('specialization_id')->constrained('specializations')->onDelete('cascade');
+            $table->string('status', 15)->nullable();
+
+            // type
+            $table->string('type', 15)->default('0')->comment('open, closed');
+
+            // location type
+            $table->string('location_type', 15)->default('0')->comment('remote, on-site');
+
+            // location
+            $table->string('longitude', 150)->nullable();
+            $table->string('latitude', 150)->nullable();
+            $table->string('address', 150)->nullable();
+
             $table->timestamps();
         });
     }

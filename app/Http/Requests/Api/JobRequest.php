@@ -32,6 +32,11 @@ class JobRequest extends FormRequest
             'client_id' => 'exists:users,id',
             'specialization_id' => 'exists:specializations,id',
             // 'attachments.*' => 'file',
+            'type'=>'nullable',
+            'location_type'=>'nullable',
+            'longitude'=>'nullable',
+            'latitude'=>'nullable',
+            'address'=>'nullable',
         ];
     }
 

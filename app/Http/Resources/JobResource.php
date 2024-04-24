@@ -25,6 +25,12 @@ class JobResource extends JsonResource
             'expected_duration' => $this->expected_duration,
             'attachments' => $this->attachments,
             'created_at' => $this->created_at,
+            'status' => $this->status,
+            'type' => $this->type,
+            'location_type' => $this->location_type,
+            'longitude' => $this->longitude,
+            'latitude' => $this->latitude,
+            'address' => $this->address,
             'applications' => ApplicationResource::collection($this->applications),
         ];
     }
