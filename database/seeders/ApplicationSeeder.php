@@ -15,6 +15,7 @@ class ApplicationSeeder extends Seeder
     {
         DB::table('applications')->insert([
             [
+                'slug' => 'job-1-freelancer-3',
                 'bid' => 1000,
                 'duration' => 30,
                 'cover_letter' => 'This is a sample cover letter for the job application.',
@@ -23,6 +24,7 @@ class ApplicationSeeder extends Seeder
                 'freelancer_id' => 3
             ],
             [
+                'slug' => 'job-2-freelancer-1',
                 'bid' => 1500,
                 'duration' => 45,
                 'cover_letter' => 'I am excited to apply for this job opportunity.',
@@ -31,6 +33,7 @@ class ApplicationSeeder extends Seeder
                 'freelancer_id' => 3
             ],
             [
+                'slug' => 'job-3-freelancer-1',
                 'bid' => 2000,
                 'duration' => 60,
                 'cover_letter' => 'I have the necessary skills and experience for this job.',

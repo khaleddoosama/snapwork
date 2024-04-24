@@ -16,6 +16,7 @@ class JobSeeder extends Seeder
         DB::table('jobs')->insert([
             [
                 'title' => 'Web Development Project',
+                'slug' => 'web-development-project',
                 'description' => 'Looking for a web developer to create a responsive website.',
                 'required_skills' => json_encode(["HTML", "CSS", "JavaScript", "PHP"]),
                 'expected_budget' => 3000,
@@ -30,6 +31,7 @@ class JobSeeder extends Seeder
         DB::table('jobs')->insert([
             [
                 'title' => 'Mobile App Development',
+                'slug' => 'mobile-app-development',
                 'description' => 'Developing an iOS and Android app for our company.',
                 'required_skills' => json_encode(["Swift", "Kotlin", "Firebase", "React Native"]),
                 'expected_budget' => 5000,
@@ -49,6 +51,7 @@ class JobSeeder extends Seeder
         DB::table('jobs')->insert([
             [
                 'title' => 'Graphic Design Project',
+                'slug' => 'graphic-design-project',
                 'description' => 'Designing a company logo and branding materials.',
                 'required_skills' => json_encode(["Adobe Illustrator", "Adobe Photoshop", "Typography"]),
                 'expected_budget' => 1500,
