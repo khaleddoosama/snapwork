@@ -31,8 +31,28 @@ class ApplicationController extends Controller
     // Hire
     public function hire(Job $job, Application $application)
     {
-        return [$job, $application];
-        // $application = $this->applicationService->hire($job, $application);
-        // return $this->apiResponse(new ApplicationResource($application), 'Freelancer hired successfully');
+        // check if the authenticated user is the owner of the job
+        if (auth()->user()->id != $job->client_id) {
+            return $this->apiResponse(null, 'Unauthorized', 401);
+        }
+
+        // check if the application belongs to the job
+        if ($application->job_id != $job->id) {
+            return $this->apiResponse(null, 'Not Responsible', 401);
+        }
+
+        // check if the job is not already hired
+
+        if ($job->status === 'hired') {
+            return $this->apiResponse(null, 'error: Job is hired before', 401);
+        }
+
+        // check if the application is not already hired
+        if ($application->status === 'hired') {
+            return $this->apiResponse(null, 'Application is hired', 401);
+        }
+
+        $application = $this->applicationService->hire($application);
+        return $this->apiResponse(new ApplicationResource($application), 'Hired', 200);
     }
 }

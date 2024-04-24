@@ -13,4 +13,12 @@ class ApplicationService
         $job = auth()->user()->applications()->create($data);
         return $job;
     }
+
+    // hire
+    public function hire(Application $application)
+    {
+        $application->update(['status' => 'hired']);
+        $application->job->update(['status' => 'hired']);
+        return $application;
+    }
 }

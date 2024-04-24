@@ -14,10 +14,11 @@ class Application extends Model
 
     public function sluggable(): array
     {
+
         return [
             'slug' => [
-                'source' => 'job.title' . 'freelancer.username'
-            ]
+                'source' => ['job.title', 'freelancer.id', 'freelancer.username'],
+            ],
         ];
     }
 

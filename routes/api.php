@@ -61,5 +61,5 @@ Route::middleware('jwt.verify')->group(function () {
     Route::delete('/bookmarks/{bookmark}', [BookmarkController::class, 'destroy']);
 
     // Hire
-    Route::put('/hire/{job}/{application}', [ApplicationController::class, 'hire']);
+    Route::put('/hire/{job:slug}/{application:slug}', [ApplicationController::class, 'hire']);
 });

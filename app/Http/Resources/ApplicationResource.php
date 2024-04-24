@@ -16,12 +16,14 @@ class ApplicationResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'slug' => $this->slug,
             'freelancer' => $this->freelancer->name,
             'bid' => $this->bid,
             'duration' => $this->duration,
             'cover_letter' => $this->cover_letter,
             'attachments' => $this->attachments,
             'created_at' => $this->created_at,
+            'status' => $this->status,
         ];
     }
 }

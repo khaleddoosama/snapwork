@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('job_id')->constrained()->onDelete('cascade');
             $table->foreignId('freelancer_id')->constrained('users')->onDelete('cascade');
-            $table->string('slug', 100);
+            $table->string('slug', 100)->unique()->nullable();
             $table->float('bid');
             $table->integer('duration'); // Duration in days, assuming integer value is suitable
             $table->text('cover_letter');
