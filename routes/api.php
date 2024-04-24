@@ -59,4 +59,6 @@ Route::middleware('jwt.verify')->group(function () {
     Route::get('/bookmarks', [BookmarkController::class, 'index']);
     Route::post('/bookmarks', [BookmarkController::class, 'store']);
     Route::delete('/bookmarks/{bookmark}', [BookmarkController::class, 'destroy']);
+
+    
 });

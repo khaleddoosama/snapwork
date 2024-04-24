@@ -18,6 +18,10 @@ class DatabaseSeeder extends Seeder
             SpecializationSeeder::class,
             SkillSeeder::class,
             UserSeeder::class,
+            JobSeeder::class,
+            ApplicationSeeder::class,
+            InvitationSeeder::class,
+            BookmarkSeeder::class
         ]);
     }
 }

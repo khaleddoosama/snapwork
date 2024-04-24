@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('job_id')->constrained()->onDelete('cascade');
             $table->foreignId('freelancer_id')->constrained('users')->onDelete('cascade');
-            $table->string('status', 15);
+            $table->string('status', 15)->nullable();
             $table->timestamps();
 
             // Composite unique key

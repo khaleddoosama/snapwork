@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 100)->index();
             $table->text('description');
-            $table->json('required_skills');
+            $table->json('required_skills')->nullable();
             $table->float('expected_budget')->index();
             $table->integer('expected_duration');
             $table->json('attachments')->nullable();
