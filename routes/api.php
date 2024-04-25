@@ -40,14 +40,16 @@ Route::group([
 });
 
 
+Route::get('/specializations', [ProfileController::class, 'getSpecializations']);
+Route::get('/jobs/specialization/{specialization_id?}', [JobController::class, 'index']);
+Route::get('/jobs/{job}', [JobController::class, 'show']);
+
+
 Route::middleware('jwt.verify')->group(function () {
-    Route::get('/specializations', [ProfileController::class, 'getSpecializations']);
 
     // jobs
-    Route::get('/jobs/specialization/{specialization_id?}', [JobController::class, 'index']);
     Route::post('/jobs', [JobController::class, 'store']);
     Route::put('/jobs/{job}', [JobController::class, 'update']);
-    Route::get('/jobs/{job}', [JobController::class, 'show']);
 
     // invitations
     Route::post('/invitations', [InvitationController::class, 'store']);

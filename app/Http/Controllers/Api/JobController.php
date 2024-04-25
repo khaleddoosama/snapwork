@@ -45,10 +45,7 @@ class JobController extends Controller
     // show
     public function show(Job $job)
     {
-        // check authorization
-        if (auth()->user()->id != $job->client_id) {
-            return $this->apiResponse(null, 'Unauthorized', 401);
-        }
+
         return $this->apiResponse(new JobResource($job), 'Job found', 200);
     }
 
