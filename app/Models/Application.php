@@ -17,7 +17,7 @@ class Application extends Model
 
         return [
             'slug' => [
-                'source' => ['job.title', 'freelancer.id', 'freelancer.username'],
+                'source' => ['job.slug', 'freelancer.id', 'freelancer.username'],
             ],
         ];
     }

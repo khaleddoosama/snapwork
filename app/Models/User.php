@@ -70,6 +70,11 @@ class User extends Authenticatable implements JWTSubject
     {
         return $query->where('role', 'admin');
     }
+    // is admin
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
 
     // scope student and pending
     public function scopeStudentPending($query)

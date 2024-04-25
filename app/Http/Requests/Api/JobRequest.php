@@ -13,7 +13,8 @@ class JobRequest extends FormRequest
         if ($this->isMethod('post')) {
             return true;
         } else if ($this->isMethod('put')) {
-            return auth()->check() && auth()->user()->id == $this->job->client_id;
+            $job = $this->route('job');
+            return $this->user()->can('update', $job);
         }
 
         return false;
@@ -32,11 +33,11 @@ class JobRequest extends FormRequest
             'client_id' => 'exists:users,id',
             'specialization_id' => 'exists:specializations,id',
             // 'attachments.*' => 'file',
-            'type'=>'nullable',
-            'location_type'=>'nullable',
-            'longitude'=>'nullable',
-            'latitude'=>'nullable',
-            'address'=>'nullable',
+            'type' => 'nullable',
+            'location_type' => 'nullable',
+            'longitude' => 'nullable',
+            'latitude' => 'nullable',
+            'address' => 'nullable',
         ];
     }
 

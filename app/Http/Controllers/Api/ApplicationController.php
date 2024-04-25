@@ -32,9 +32,11 @@ class ApplicationController extends Controller
     public function hire(Job $job, Application $application)
     {
         // check if the authenticated user is the owner of the job
-        if (auth()->user()->id != $job->client_id) {
-            return $this->apiResponse(null, 'Unauthorized', 401);
-        }
+        // if (auth()->user()->id != $job->client_id) {
+        //     return $this->apiResponse(null, 'Unauthorized', 401);
+        // }
+
+        $this->authorize('hire', $job);
 
         // check if the application belongs to the job
         if ($application->job_id != $job->id) {
@@ -42,7 +44,6 @@ class ApplicationController extends Controller
         }
 
         // check if the job is not already hired
-
         if ($job->status === 'hired') {
             return $this->apiResponse(null, 'error: Job is hired before', 401);
         }
