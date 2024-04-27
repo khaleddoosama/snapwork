@@ -13,19 +13,50 @@ class SpecializationSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('specializations')->insert([
-            'name' => 'Web Development',
-            'slug' => 'web-development',
-        ]);
+        // Define your data
+        $specializations = [
+            // Web Development
+            'Web Development',
+            'Front end development',
+            'Back end development',
+            'Mobile development',
+            'Game Development',
+            'Kotlin development',
+            'Flutter development',
+            'Desktop development',
+            'Machine learning development',
+            'UI/UX development',
+            'UI designer',
+            'UI development',
+            'Instructor for programming',
+            // Graphics
+            'Graphics designer',
+            'Graphics development',
+            'Photoshop development',
+            // Teaching
+            'Teacher for primary level',
+            'Teacher for preparatory level',
+            'Teacher for secondary level',
+            // Services
+            'Chef',
+            'Plumber',
+            'Carpenter',
+            'Maid',
+            'Babysitter',
+            // Content Creation
+            'Content creation',
+            'Writing articles',
+            'Social media administrators',
+            'Video maker',
+            'Video editing',
+        ];
 
-        DB::table('specializations')->insert([
-            'name' => 'Mobile Development',
-            'slug' => 'mobile-development',
-        ]);
-
-        DB::table('specializations')->insert([
-            'name' => 'Game Development',
-            'slug' => 'game-development',
-        ]);
+        // Insert data into the database
+        foreach ($specializations as $specialization) {
+            DB::table('specializations')->insert([
+                'name' => $specialization,
+                'slug' => \Illuminate\Support\Str::slug($specialization), // Generate slug
+            ]);
+        }
     }
 }

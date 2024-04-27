@@ -40,6 +40,7 @@ Route::group([
 });
 
 
+Route::get('/freelancers/{specialization_id?}', [ProfileController::class, 'getFreelancers']);
 Route::get('/specializations', [ProfileController::class, 'getSpecializations']);
 Route::get('/jobs/specialization/{specialization_id?}', [JobController::class, 'index']);
 Route::get('/jobs/{job}', [JobController::class, 'show']);
@@ -64,4 +65,6 @@ Route::middleware('jwt.verify')->group(function () {
 
     // Hire
     Route::put('/hire/{job:slug}/{application:slug}', [ApplicationController::class, 'hire']);
+
+    //
 });

@@ -268,4 +268,16 @@ class ProfileController extends Controller
         $specializations = Specialization::get();
         return $this->apiResponse(SpecializationResource::collection($specializations), 'Specializations fetched successfully', 200);
     }
+
+    //getFreelancers
+    public function getFreelancers($specialization_id = null)
+    {
+        if ($specialization_id) {
+            // return users with scope freelancer (scopeFreelancer) and return last 10
+            $freelancers = User::freelancer()->where('specialization_id', $specialization_id)->latest()->take(10)->get();
+        } else {
+            $freelancers = User::freelancer()->latest()->take(10)->get();
+        }
+        return $this->apiResponse(UserResource::collection($freelancers), 'Freelancers fetched successfully', 200);
+    }
 }

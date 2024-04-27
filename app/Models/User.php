@@ -53,16 +53,16 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /* Scopes */
-    // scope student
-    public function scopeStudent($query)
+    // scope freelancer
+    public function scopeFreelancer($query)
     {
-        return $query->where('role', 'student');
+        return $query->where('role', 'freelancer');
     }
 
-    // scope instructor
-    public function scopeInstructor($query)
+    // scope client
+    public function scopeClient($query)
     {
-        return $query->where('role', 'instructor');
+        return $query->where('role', 'client');
     }
 
     // scope admin
