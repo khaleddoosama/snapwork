@@ -26,7 +26,7 @@ class UserResource extends JsonResource
             'country' => $this->country,
             'address' => $this->address,
             'role' => $this->role,
-            'specialization' => $this->specialization->name,
+            'specialization' => $this->specialization ? $this->specialization->name : null,
             'job_title' => $this->job_title,
             'gender' => $this->gender,
             'dob' => $this->dob,
@@ -39,7 +39,6 @@ class UserResource extends JsonResource
             'Employment' => EmploymentResource::collection($this->employments),
             'certifications' => CertificationResource::collection($this->certifications),
             'created_at' => $this->created_at,
-
         ];
     }
 }
