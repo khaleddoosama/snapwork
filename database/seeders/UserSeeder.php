@@ -54,6 +54,7 @@ class UserSeeder extends Seeder
         ]);
 
         // Assign role using role name, ensure 'Super Admin' role exists
+        $admin = User::find(1);
         $admin->assignRole('Super Admin');
         DB::table('user_skills')->insert([
             [
