@@ -16,7 +16,7 @@ class BookmarkResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'job' => $this->job->title,
+            'job' => new JobResource($this->job),
             // 'url' => $this->job->url,
             'created_at' => $this->created_at
         ];
