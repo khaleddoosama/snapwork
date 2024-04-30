@@ -5,22 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction extends Model
+class Withdrawal extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'type', 'amount', 'user_id', 'escrow_id', 'status'
+        'user_id', 'amount', 'status'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
-    public function escrow()
-    {
-        return $this->belongsTo(Escrow::class);
-    }
 }
-

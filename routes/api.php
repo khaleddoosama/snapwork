@@ -7,7 +7,9 @@ use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RequestChangeController;
+use App\Http\Controllers\Payment\PaymentGatewayController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -72,3 +74,11 @@ Route::middleware('jwt.verify')->group(function () {
     Route::put('/request-submit/{job:slug}/', [RequestChangeController::class, 'requestSubmit']);
     Route::put('/request-cancel/{job:slug}', [RequestChangeController::class, 'requestCancel']);
 });
+
+
+Route::prefix('payment')->middleware(['auth', 'jwt.verify', 'throttle:60,1'])->group(function () {
+    Route::post('initiate', [PaymentGatewayController::class, 'initiate'])->name('payment.initiate');
+    Route::post('complete', [PaymentGatewayController::class, 'complete'])->name('payment.complete');
+    Route::get('status/{transaction}', [PaymentGatewayController::class, 'status'])->name('payment.status');
+});
+

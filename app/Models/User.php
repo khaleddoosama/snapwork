@@ -162,6 +162,17 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Bookmark::class);
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
+
+
     /* methods */
     // set Picture Attribute
     public function setPictureAttribute(UploadedFile $picture)
