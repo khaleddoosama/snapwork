@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('request_changes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('freelancer_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('job_id')->constrained()->onDelete('cascade');
-            $table->string('type', 50)->comment('price, delivery_date,project_delivery, cancel_project');
-            $table->text('description');
+            $table->string('type', 50)->comment('change, submit ,cancel');
+            $table->float('new_bid')->nullable();
+            $table->integer('new_duration')->nullable(); // Duration in days, assuming integer value is suitable
+            $table->text('description')->nullable();
+            $table->text('response')->nullable();
             $table->string('status', 15)->default('pending');
             $table->timestamp('resolved_at')->nullable();
             $table->timestamps();

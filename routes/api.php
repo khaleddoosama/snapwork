@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BookmarkController;
 use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\RequestChangeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,5 +67,8 @@ Route::middleware('jwt.verify')->group(function () {
     // Hire
     Route::put('/hire/{job:slug}/{application:slug}', [ApplicationController::class, 'hire']);
 
-    //
+    // request change
+    Route::post('/request-change/{job:slug}/', [RequestChangeController::class, 'requestChange']);
+    Route::put('/request-submit/{job:slug}/', [RequestChangeController::class, 'requestSubmit']);
+    Route::put('/request-cancel/{job:slug}', [RequestChangeController::class, 'requestCancel']);
 });

@@ -42,4 +42,15 @@ class Job extends Model
     {
         return $this->hasMany(Application::class, 'job_id');
     }
+
+    public function requestChanges()
+    {
+        return $this->hasMany(RequestChange::class, 'job_id');
+    }
+    
+    // return hired application
+    public function hiredApplication()
+    {
+        return $this->hasOne(Application::class, 'job_id')->where('status', 'hired');
+    }
 }
