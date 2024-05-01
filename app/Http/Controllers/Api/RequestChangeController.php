@@ -113,34 +113,58 @@ class RequestChangeController extends Controller
 
     private function handleAcceptance($request_change)
     {
-        if ($request_change->type == 'change') {
+        switch ($request_change->type) {
+            case 'change':
+                $this->handleChange($request_change);
+                break;
+            case 'submit':
+                $this->handleSubmit($request_change);
+                break;
+            case 'cancel':
+                $this->handleCancel($request_change);
+                break;
+            default:
+                throw new \InvalidArgumentException("Invalid request type: {$request_change->type}");
+        }
+        $request_change->save();
+    }
 
-            $application = Application::find($request_change->application_id);
-            $application->bid = $request_change->new_bid;
-            $application->duration = $request_change->new_duration;
-            $application->save();
-        } else if ($request_change->type == 'submit') {
+    private function handleChange($request_change)
+    {
+        $application = Application::find($request_change->application_id);
+        if (!$application) {
+            throw new \RuntimeException('Application not found.');
+        }
 
-            $job = Job::find($request_change->job_id);
-            if ($job->status == 'open' || $job->status == 'Done') {
-                throw ValidationException::withMessages(['request_change' => 'Request change can not be submitted.']);
-            }
+        $application->bid = $request_change->new_bid;
+        $application->duration = $request_change->new_duration;
+        $application->save();
+    }
+
+    private function handleSubmit($request_change)
+    {
+        $job = Job::find($request_change->job_id);
+        if ($job && $job->status === 'hired') {
             $job->status = 'Done';
             Application::where('job_id', $request_change->job_id)->update(['status' => 'Done']);
             $job->save();
-        } else if ($request_change->type == 'cancel') {
-            $job = Job::find($request_change->job_id);
-            if ($job->status == 'open' || $job->status == 'Done') {
-                throw ValidationException::withMessages(['request_change' => 'Request change can not be cancelled.']);
-            }
+        } else {
+            throw ValidationException::withMessages(['request_change' => 'Request change cannot be submitted under current job status.']);
+        }
+    }
 
+    private function handleCancel($request_change)
+    {
+        $job = Job::find($request_change->job_id);
+        if ($job && $job->status === 'hired') {
             $job->status = 'open';
             Application::where('job_id', $request_change->job_id)->update(['status' => 'cancelled']);
             $job->save();
+        } else {
+            throw ValidationException::withMessages(['request_change' => 'Request change cannot be cancelled under current job status.']);
         }
-
-        $request_change->save();
     }
+
 
     public function responseDecline(RequestChange $request_change)
     {
