@@ -27,7 +27,10 @@ class RequestChangeController extends Controller
 
     public function requestChange(RequestChangeRequest $request, Job $job, Application $application)
     {
-        $data = $request->validated();
+        $data = $request->validated() + [
+            'job_id' => $job->id,
+            'application_id' => $application->id
+        ];
         // check if user created request change before and their status is pending
         $user_request_change = $job->requestChanges()->where('application_id', $application->id)->where('status', 'pending')->where('type', 'change')->first();
         if ($user_request_change) {
@@ -44,36 +47,47 @@ class RequestChangeController extends Controller
 
     public function requestSubmit(RequestChangeRequest $request, Job $job, Application $application)
     {
-        $request->validated();
-        // check if user created request change before and their status is pending
-        $user_request_change = $job->requestChanges()->where('application_id', $application->id)->whereIn('status', ['pending', 'submit'])->where('type', 'submit')->first();
-        if ($user_request_change) {
-            throw ValidationException::withMessages(['request_submit' => 'You have already created a request submit.']);
-        }
+        $this->validateRequestChange($request, $job, $application, 'submit');
 
-        $data['application_id'] = $application->id;
-        $data['job_id'] = $job->id;
-        $data['type'] = 'submit';
-
+        $data = $this->prepareRequestChangeData($application, $job, 'submit');
         $request_change = $this->RequestChangeService->requestChange($data);
-        return $this->apiResponse($request_change, 'Request change created successfully', 201);
+
+        return $this->apiResponse($request_change, 'Request submit created successfully', 201);
     }
 
     public function requestCancel(RequestChangeRequest $request, Job $job, Application $application)
     {
-        $request->validated();
-        // check if user created request change before and their status is pending
-        $user_request_change = $job->requestChanges()->where('application_id', $application->id)->whereIn('status', ['pending', 'submit'])->where('type', 'cancel')->first();
-        if ($user_request_change) {
-            throw ValidationException::withMessages(['request_cancel' => 'You have already created a request cancel.']);
-        }
-        $data['application_id'] = $application->id;
-        $data['job_id'] = $job->id;
-        $data['type'] = 'cancel';
+        $this->validateRequestChange($request, $job, $application, 'cancel');
 
+        $data = $this->prepareRequestChangeData($application, $job, 'cancel');
         $request_change = $this->RequestChangeService->requestChange($data);
-        return $this->apiResponse($request_change, 'Request change created successfully', 201);
+
+        return $this->apiResponse($request_change, 'Request cancel created successfully', 201);
     }
+
+    private function validateRequestChange($request, $job, $application, $type)
+    {
+        $request->validated();
+        $existingRequest = $job->requestChanges()
+            ->where('application_id', $application->id)
+            ->whereIn('status', ['pending', $type])
+            ->where('type', $type)
+            ->first();
+
+        if ($existingRequest) {
+            throw ValidationException::withMessages(["request_$type" => "A request to $type has already been created and is pending."]);
+        }
+    }
+
+    private function prepareRequestChangeData(Application $application, Job $job, string $type): array
+    {
+        return [
+            'application_id' => $application->id,
+            'job_id' => $job->id,
+            'type' => $type
+        ];
+    }
+
 
 
     // response accepted
@@ -86,32 +100,9 @@ class RequestChangeController extends Controller
                 throw ValidationException::withMessages(['request_change' => 'Request change already accepted.']);
             }
             $request_change->status = 'accept';
-            if ($request_change->type == 'change') {
 
-                $application = Application::find($request_change->application_id);
-                $application->bid = $request_change->new_bid;
-                $application->duration = $request_change->new_duration;
-                $application->save();
-            } else if ($request_change->type == 'submit') {
+            $this->handleAcceptance($request_change);
 
-                $job = Job::find($request_change->job_id);
-                if ($job->status == 'open' || $job->status == 'Done') {
-                    throw ValidationException::withMessages(['request_change' => 'Request change can not be submitted.']);
-                }
-                $job->status = 'Done';
-                Application::where('job_id', $request_change->job_id)->update(['status' => 'Done']);
-                $job->save();
-            } else if ($request_change->type == 'cancel') {
-                $job = Job::find($request_change->job_id);
-                if ($job->status == 'open' || $job->status == 'Done') {
-                    throw ValidationException::withMessages(['request_change' => 'Request change can not be cancelled.']);
-                }
-
-                $job->status = 'open';
-                Application::where('job_id', $request_change->job_id)->update(['status' => 'cancelled']);
-                $job->save();
-            }
-            $request_change->save();
             DB::commit();
             return $this->apiResponse($request_change, 'Request change accepted successfully', 200);
         } catch (\Exception $e) {
@@ -120,20 +111,45 @@ class RequestChangeController extends Controller
         }
     }
 
+    private function handleAcceptance($request_change)
+    {
+        if ($request_change->type == 'change') {
+
+            $application = Application::find($request_change->application_id);
+            $application->bid = $request_change->new_bid;
+            $application->duration = $request_change->new_duration;
+            $application->save();
+        } else if ($request_change->type == 'submit') {
+
+            $job = Job::find($request_change->job_id);
+            if ($job->status == 'open' || $job->status == 'Done') {
+                throw ValidationException::withMessages(['request_change' => 'Request change can not be submitted.']);
+            }
+            $job->status = 'Done';
+            Application::where('job_id', $request_change->job_id)->update(['status' => 'Done']);
+            $job->save();
+        } else if ($request_change->type == 'cancel') {
+            $job = Job::find($request_change->job_id);
+            if ($job->status == 'open' || $job->status == 'Done') {
+                throw ValidationException::withMessages(['request_change' => 'Request change can not be cancelled.']);
+            }
+
+            $job->status = 'open';
+            Application::where('job_id', $request_change->job_id)->update(['status' => 'cancelled']);
+            $job->save();
+        }
+
+        $request_change->save();
+    }
+
     public function responseDecline(RequestChange $request_change)
     {
-        DB::beginTransaction();
-        try {
-            if ($request_change->status !== null) {
-                throw ValidationException::withMessages(['request_change' => 'Request change already responded.']);
-            }
-            $request_change->status = 'decline';
-            $request_change->save();
-            DB::commit();
-            return $this->apiResponse($request_change, 'Request change declined successfully', 200);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $this->apiResponse(null, $e->getMessage(), 500);
+        if ($request_change->status !== null) {
+            throw ValidationException::withMessages(['request_change' => 'Request change already responded.']);
         }
+        $request_change->status = 'decline';
+        $request_change->save();
+
+        return $this->apiResponse($request_change, 'Request change declined successfully', 200);
     }
 }
