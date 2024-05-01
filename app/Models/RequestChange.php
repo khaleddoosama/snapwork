@@ -11,4 +11,11 @@ class RequestChange extends Model
 
     protected $guarded = [];
 
+
+    // when change status put time now in response_at
+    public function setStatusAttribute($value)
+    {
+        $this->attributes['status'] = $value;
+        $this->attributes['response_at'] = now();
+    }
 }

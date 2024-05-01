@@ -14,11 +14,4 @@ class RequestChangeService
         $requestChange = RequestChange::create($data);
         return $requestChange;
     }
-
-
-    public function requestSubmit(array $data)
-    {
-        $requestChange = RequestChange::create($data);
-        return $requestChange;
-    }
 }

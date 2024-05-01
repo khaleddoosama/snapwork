@@ -17,11 +17,10 @@ class RequestChangeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|string|max:50',
+            'type' => 'nullable|string|max:50',
             'new_bid' => 'nullable|string|max:50',
             'new_duration' => 'nullable|string|max:50',
             'description' => 'nullable|string',
-            'freelancer_id' => 'exists:users,id',
         ];
     }
 }

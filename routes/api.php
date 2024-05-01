@@ -70,9 +70,13 @@ Route::middleware('jwt.verify')->group(function () {
     Route::put('/hire/{job:slug}/{application:slug}', [ApplicationController::class, 'hire']);
 
     // request change
-    Route::post('/request-change/{job:slug}/', [RequestChangeController::class, 'requestChange']);
-    Route::put('/request-submit/{job:slug}/', [RequestChangeController::class, 'requestSubmit']);
-    Route::put('/request-cancel/{job:slug}', [RequestChangeController::class, 'requestCancel']);
+    Route::post('/request-change/{job:slug}/{application:slug}/', [RequestChangeController::class, 'requestChange']);
+    Route::put('/request-submit/{job:slug}/{application:slug}/', [RequestChangeController::class, 'requestSubmit']);
+    Route::put('/request-cancel/{job:slug}/{application:slug}/', [RequestChangeController::class, 'requestCancel']);
+
+    // response change
+    Route::put('/response-accept/{request_change}/', [RequestChangeController::class, 'responseAccept']);
+    Route::put('/response-decline/{request_change}/', [RequestChangeController::class, 'responseDecline']);
 });
 
 
