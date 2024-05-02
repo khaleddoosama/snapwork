@@ -14,9 +14,12 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Http\UploadedFile;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+use Korridor\LaravelHasManyMerged\HasManyMerged;
+use Korridor\LaravelHasManyMerged\HasManyMergedRelation;
+
 class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, UploadTrait, Sluggable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, UploadTrait, Sluggable, HasManyMergedRelation;
 
 
     protected $guarded = [];
@@ -170,6 +173,26 @@ class User extends Authenticatable implements JWTSubject
     public function withdrawals()
     {
         return $this->hasMany(Withdrawal::class);
+    }
+
+    /**
+     * @return HasManyMerged<Message>
+     */
+    public function messages(): HasManyMerged
+    {
+        return $this->hasManyMerged(Message::class, ['sender_id', 'receiver_id']);
+    }
+
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
     }
 
 

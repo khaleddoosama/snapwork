@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookmarkController;
 use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\JobController;
+use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RequestChangeController;
 use App\Http\Controllers\Payment\PaymentGatewayController;
@@ -77,6 +78,11 @@ Route::middleware('jwt.verify')->group(function () {
     // response change
     Route::put('/response-accept/{request_change}/', [RequestChangeController::class, 'responseAccept']);
     Route::put('/response-decline/{request_change}/', [RequestChangeController::class, 'responseDecline']);
+
+    // Message
+    Route::get('/messages', [MessageController::class, 'index']);
+    Route::post('/messages', [MessageController::class, 'store']);
+
 });
 
 

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignId('receiver_id')->constrained('users')->onDelete('cascade');
             $table->text('content');
             $table->json('attachments')->nullable();
-            $table->string('status', 15);
-            $table->timestamp('created_at')->useCurrent();
+            $table->string('status', 15)->default('sent');
+            $table->timestamp('sent_at')->useCurrent();
         });
     }
 
