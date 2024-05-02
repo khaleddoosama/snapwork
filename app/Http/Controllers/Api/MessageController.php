@@ -32,4 +32,13 @@ class MessageController extends Controller
         $message = $this->messageService->save($data);
         return $this->apiResponse(new MessageResource($message), 'Message sent successfully', 200);
     }
+
+    // mark as read
+
+    public function markAsRead($message_id)
+    {
+        // dd($message);
+        $message = $this->messageService->markAsRead($message_id);
+        return $this->apiResponse(new MessageResource($message), 'Message marked as read successfully', 200);
+    }
 }

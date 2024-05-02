@@ -14,4 +14,17 @@ class MessageService
         $message = Message::create($data);
         return $message;
     }
+
+
+    public function markAsRead($message_id)
+    {
+        $message = Message::findOrFail($message_id);
+        $message->update(
+            [
+                'status' => 'read',
+                'read_at' => now()
+            ]
+        );
+        return $message;
+    }
 }

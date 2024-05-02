@@ -82,7 +82,7 @@ Route::middleware('jwt.verify')->group(function () {
     // Message
     Route::get('/messages', [MessageController::class, 'index']);
     Route::post('/messages', [MessageController::class, 'store']);
-
+    Route::put('/messages/{message}/read', [MessageController::class, 'markAsRead']);
 });
 
 
@@ -91,4 +91,3 @@ Route::prefix('payment')->middleware(['auth', 'jwt.verify', 'throttle:60,1'])->g
     Route::post('complete', [PaymentGatewayController::class, 'complete'])->name('payment.complete');
     Route::get('status/{transaction}', [PaymentGatewayController::class, 'status'])->name('payment.status');
 });
-
