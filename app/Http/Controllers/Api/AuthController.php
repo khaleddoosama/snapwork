@@ -135,7 +135,7 @@ class AuthController extends Controller
         $data = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60 * 24, // 60 minutes * 24 hours = 1 day
+            'expires_in' => auth('api')->factory()->getTTL() * 60, // 60 minutes * 24 hours = 1 day
             'user' => new UserResource(auth('api')->user())
         ];
         return $this->apiResponse($data, 'ok', 200);
