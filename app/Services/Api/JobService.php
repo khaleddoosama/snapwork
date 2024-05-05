@@ -18,6 +18,13 @@ class JobService
         return $jobs;
     }
 
+    // get jobs for client
+    public function getForClient()
+    {
+        $jobs = auth()->user()->jobs;
+        return $jobs;
+    }
+
     // store job
     public function save(array $data)
     {

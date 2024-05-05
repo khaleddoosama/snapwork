@@ -22,6 +22,10 @@ class Application extends Model
         ];
     }
 
+    protected $casts = [
+        'attachments' => 'array',
+    ];
+
     public function job()
     {
         return $this->belongsTo(Job::class);

@@ -7,6 +7,13 @@ use Illuminate\Validation\ValidationException;
 
 class ApplicationService
 {
+    // get applications for freelancer
+    public function getForFreelancer()
+    {
+        $applications = auth()->user()->applications;
+        return $applications;
+    }
+
     // store application
     public function save(array $data)
     {

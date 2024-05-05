@@ -33,6 +33,7 @@ class JobResource extends JsonResource
             'latitude' => $this->latitude,
             'address' => $this->address,
             'applications' => ApplicationResource::collection($this->applications),
+            'reqeusts' => RequestChangeResource::collection($this->requestChanges),
         ];
     }
 }

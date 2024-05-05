@@ -28,6 +28,14 @@ class JobController extends Controller
         return $this->apiResponse(JobResource::collection($jobs), 'Jobs fetched successfully', 200);
     }
 
+
+    // get all jobs for client
+    public function getForClient()
+    {
+        $jobs = $this->jobService->getForClient();
+        return $this->apiResponse(JobResource::collection($jobs), 'Jobs fetched successfully', 200);
+    }
+
     // store
     public function store(JobRequest $request)
     {

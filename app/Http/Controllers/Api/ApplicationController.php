@@ -21,6 +21,14 @@ class ApplicationController extends Controller
         $this->applicationService = $applicationService;
     }
 
+    // Get all applications for freelancer
+
+    public function getForFreelancer()
+    {
+        $applications = $this->applicationService->getForFreelancer();
+        return $this->apiResponse(ApplicationResource::collection($applications), 'Applications retrieved successfully', 200);
+    }
+
     public function store(ApplicationRequest $request)
     {
         $data = $request->validated();

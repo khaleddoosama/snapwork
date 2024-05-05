@@ -54,6 +54,7 @@ Route::get('/jobs/{job}', [JobController::class, 'show']);
 Route::middleware('jwt.verify')->group(function () {
 
     // jobs
+    Route::get('/jobs', [JobController::class, 'getForClient']);
     Route::post('/jobs', [JobController::class, 'store']);
     Route::put('/jobs/{job}', [JobController::class, 'update']);
 
@@ -61,6 +62,7 @@ Route::middleware('jwt.verify')->group(function () {
     Route::post('/invitations', [InvitationController::class, 'store']);
 
     // Applications
+    Route::get('/applications', [ApplicationController::class, 'getForFreelancer']);
     Route::post('/applications', [ApplicationController::class, 'store']);
 
     // bookmarks
