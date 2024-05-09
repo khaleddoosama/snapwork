@@ -94,7 +94,7 @@ Route::middleware('jwt.verify')->group(function () {
 });
 
 
-Route::prefix('payment')->middleware(['auth', 'jwt.verify', 'throttle:60,1'])->group(function () {
+Route::prefix('payment')->middleware(['auth', 'throttle:60,1'])->group(function () {
     Route::post('initiate', [PaymentGatewayController::class, 'initiate'])->name('payment.initiate');
     Route::post('complete', [PaymentGatewayController::class, 'complete'])->name('payment.complete');
     Route::get('status/{transaction}', [PaymentGatewayController::class, 'status'])->name('payment.status');
