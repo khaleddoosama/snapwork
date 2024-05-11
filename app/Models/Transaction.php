@@ -10,7 +10,7 @@ class Transaction extends Model
     use HasFactory;
 
     protected $fillable = [
-        'type', 'amount', 'user_id', 'escrow_id', 'status'
+        'type', 'amount', 'user_id', 'escrow_id', 'status', 'paymob_order_id'
     ];
 
     public function user()
@@ -23,4 +23,5 @@ class Transaction extends Model
         return $this->belongsTo(Escrow::class);
     }
 }
+
 
