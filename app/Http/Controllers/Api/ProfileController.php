@@ -99,20 +99,18 @@ class ProfileController extends Controller
             }
 
             $user = Auth::user();
-            $newLanguages = collect($request->languages);  // Assuming this is an array of ['name' => '...', 'level' => '...']
-            $currentLanguages = $user->languages()->get(['name', 'level'])->keyBy('name');
 
-            // Loop through the new languages and compare with current
-            foreach ($newLanguages as $language) {
-                $user->languages()->updateOrCreate(['name' => $language['name']], ['level' => $language['level']]);
+            // update existing languages or create new ones
+            foreach ($request->languages as $languageData) {
+                $language = $user->languages()->updateOrCreate(
+                    ['id' => $languageData['id'] ?? null], // Assuming 'id' is a unique identifier for languages
+                    $languageData
+                );
+                $arr[] = $language->id;
             }
 
-            // Remove any languages that are not in the new list
-            foreach ($currentLanguages as $currentLanguage) {
-                if (!$newLanguages->contains('name', $currentLanguage->name)) {
-                    $user->languages()->where('name', $currentLanguage->name)->delete();
-                }
-            }
+            // remove old languages
+            $user->languages()->whereNotIn('id', $arr)->delete();
 
             return $this->apiResponse(new UserResource($user), 'Languages updated successfully', 200);
         } catch (Exception $e) {
@@ -139,16 +137,19 @@ class ProfileController extends Controller
             }
 
             $user = Auth::user();
+
             // Update existing educations or create new ones
             foreach ($request->educations as $educationData) {
-                $employment = $user->educations()->updateOrCreate(
+                $education = $user->educations()->updateOrCreate(
                     ['id' => $educationData['id'] ?? null], // Assuming 'id' is a unique identifier for educations
                     $educationData
                 );
+
+                $arr[] = $education->id;
             }
 
             // Remove any educations that are not in the new list
-            $user->educations()->whereNotIn('id', collect($request->educations)->pluck('id'))->delete();
+            $user->educations()->whereNotIn('id', $arr)->delete();
 
             return $this->apiResponse(new UserResource($user), 'Educations updated successfully', 200);
         } catch (Exception $e) {
@@ -251,11 +252,19 @@ class ProfileController extends Controller
             }
 
             $user = Auth::user();
-            // remove old certifications
-            $user->certifications()->delete();
 
-            // add new certifications
-            $user->certifications()->createMany($request->certifications);
+            // Update existing certifications or create new ones
+            foreach ($request->certifications as $certificationData) {
+                $certification = $user->certifications()->updateOrCreate(
+                    ['id' => $certificationData['id'] ?? null], // Assuming 'id' is a unique identifier for certifications
+                    $certificationData
+                );
+
+                $arr[] = $certification->id;
+            }
+
+            // Remove any certifications that are not in the new list
+            $user->certifications()->whereNotIn('id', $arr)->delete();
 
             return $this->apiResponse(new UserResource($user), 'Certifications updated successfully', 200);
         } catch (Exception $e) {
