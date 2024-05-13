@@ -10,7 +10,7 @@ class Escrow extends Model
     use HasFactory;
 
     protected $fillable = [
-        'job_id', 'amount', 'status', 'transaction_id'
+        'job_id', 'amount', 'status'
     ];
 
     public function job()
