@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\MessageRequest;
 use App\Http\Resources\MessageResource;
+use App\Models\Message;
+use App\Models\User;
 use App\Services\Api\MessageService;
 use Illuminate\Http\Request;
 
@@ -33,8 +35,16 @@ class MessageController extends Controller
         return $this->apiResponse(new MessageResource($message), 'Message sent successfully', 200);
     }
 
-    // mark as read
+    public function show($user_id)
+    {
+        // Fetch common messages directly from the database
+        $messages = $this->messageService->showUserMessages($user_id);
 
+        return $this->apiResponse(MessageResource::collection($messages), 'Messages fetched successfully', 200);
+    }
+
+
+    // mark as read
     public function markAsRead($message_id)
     {
         // dd($message);

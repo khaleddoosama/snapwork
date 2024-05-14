@@ -89,6 +89,7 @@ Route::middleware('jwt.verify')->group(function () {
 
     // Message
     Route::get('/messages', [MessageController::class, 'index']);
+    Route::get('/messages/{user_id}', [MessageController::class, 'show']);
     Route::post('/messages', [MessageController::class, 'store']);
     Route::put('/messages/{message}/read', [MessageController::class, 'markAsRead']);
 });
