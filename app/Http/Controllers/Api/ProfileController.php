@@ -3,8 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\CertificationRequest;
+use App\Http\Requests\Api\ChangePasswordRequest;
+use App\Http\Requests\Api\EducationRequest;
+use App\Http\Requests\Api\EmploymentRequest;
+use App\Http\Requests\Api\LanguageRequest;
+use App\Http\Requests\Api\UpdateSkillsRequest;
+use App\Http\Resources\CertificationResource;
+use App\Http\Resources\EducationResource;
+use App\Http\Resources\EmploymentResource;
+use App\Http\Resources\LanguageResource;
 use App\Http\Resources\SpecializationResource;
 use App\Http\Resources\UserResource;
+use App\Models\Certification;
+use App\Models\Education;
+use App\Models\EmploymentHistory;
+use App\Models\Language;
 use App\Models\Skill;
 use App\Models\Specialization;
 use Illuminate\Http\Request;
@@ -25,36 +39,22 @@ class ProfileController extends Controller
     }
 
     // change password
-    public function changePassword(Request $request)
+    public function changePassword(ChangePasswordRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'old_password' => 'required|current_password',
-            'password' => 'required|string|confirmed|min:8',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->errors()->first(), 422);
-        }
+        $data = $request->validated();
 
         $user = Auth::user();
-        $user->update(['password' => bcrypt($request->password)]);
+        $user->update(['password' => bcrypt($data->password)]);
 
 
         return $this->apiResponse(new UserResource($user), 'Password changed successfully', 200);
     }
 
     //updateSkills
-    public function updateSkills(Request $request)
+    public function updateSkills(UpdateSkillsRequest $request)
     {
         try {
-            $validator = Validator::make($request->all(), [
-                'skills' => 'required|array',
-                'skills.*' => 'required|string'
-            ]);
-
-            if ($validator->fails()) {
-                return $this->apiResponse(null, $validator->errors()->first(), 422);
-            }
+           $data = $request->validated();
 
             $user = Auth::user();
             $skills = $request->skills;
@@ -82,94 +82,9 @@ class ProfileController extends Controller
         }
     }
 
-    private function updateUserData($request, $rules, $relation, $resourceMessage)
-    {
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->errors()->first(), 422);
-        }
-
-        $user = Auth::user();
-        $data = $request->all();
-
-        DB::transaction(function () use ($user, $data, $relation, &$ids) {
-            $ids = [];
-            foreach ($data[$relation] as $item) {
-
-                $model = $user->$relation()->updateOrCreate(
-                    ['id' => $item['id'] ?? null],
-                    $item
-                );
-                $ids[] = $model->id;
-            }
-
-            $user->$relation()->whereNotIn('id', $ids)->delete();
-        });
-
-        return $this->apiResponse(new UserResource($user), $resourceMessage, 200);
-    }
-
-    public function updateLanguages(Request $request)
-    {
-        $rules = [
-            'languages' => 'required|array',
-            'languages.*.name' => 'required|string',
-            'languages.*.level' => 'required',
-        ];
-
-        return $this->updateUserData($request, $rules, 'languages', 'Languages updated successfully');
-    }
-
-    public function updateEducations(Request $request)
-    {
-        $rules = [
-            'educations' => 'required|array',
-            'educations.*.school' => 'required|string',
-            'educations.*.degree' => 'required|string',
-            'educations.*.start_date' => 'required|date',
-            'educations.*.end_date' => 'required|date',
-            'educations.*.major' => 'nullable|string',
-            'educations.*.description' => 'nullable|string',
-        ];
-
-        return $this->updateUserData($request, $rules, 'educations', 'Educations updated successfully');
-    }
-
-    public function updateEmployments(Request $request)
-    {
-        $rules = [
-            'employments' => 'required|array',
-            'employments.*.company' => 'required|string',
-            'employments.*.position' => 'required|string',
-            'employments.*.city' => 'nullable|string',
-            'employments.*.country' => 'nullable|string',
-            'employments.*.start_date' => 'required|date',
-            'employments.*.end_date' => 'required|date',
-            'employments.*.description' => 'nullable|string',
-        ];
-
-        return $this->updateUserData($request, $rules, 'employments', 'Employments updated successfully');
-    }
-
-    public function updateCertifications(Request $request)
-    {
-        $rules = [
-            'certifications' => 'required|array',
-            'certifications.*.name' => 'required|string',
-            'certifications.*.issuer' => 'required|string',
-            'certifications.*.issue_date' => 'required|date',
-            'certifications.*.url' => 'nullable|url',
-            'certifications.*.description' => 'nullable|string',
-        ];
-
-        return $this->updateUserData($request, $rules, 'certifications', 'Certifications updated successfully');
-    }
-
-
     public function getSpecializations()
     {
-        $specializations = Cache::remember('specializations', 60, function () {
+        $specializations = Cache::remember('specializations', 3600, function () {
             return Specialization::all();
         });
         return $this->apiResponse(SpecializationResource::collection($specializations), 'Specializations fetched successfully', 200);

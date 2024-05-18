@@ -3,8 +3,12 @@
 use App\Http\Controllers\Api\ApplicationController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookmarkController;
+use App\Http\Controllers\Api\CertificationController;
+use App\Http\Controllers\Api\EducationController;
+use App\Http\Controllers\Api\EmploymentController;
 use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\JobController;
+use App\Http\Controllers\Api\LanguageController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RateController;
@@ -27,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
-], function ($router) {
+], function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -37,11 +41,28 @@ Route::group([
 
     Route::put('/change-password', [ProfileController::class, 'changePassword']);
     Route::put('/update-skills', [ProfileController::class, 'updateSkills']);
-    Route::put('/update-languages', [ProfileController::class, 'updateLanguages']);
-    Route::put('/update-educations', [ProfileController::class, 'updateEducations']);
-    Route::put('/update-employments', [ProfileController::class, 'updateEmployments']);
-    Route::put('/update-projects', [ProfileController::class, 'updateProjects']);
-    Route::put('/update-certifications', [ProfileController::class, 'updateCertifications']);
+
+    // Language routes
+    Route::post('languages', [LanguageController::class, 'addLanguage']);
+    Route::put('languages/{language}', [LanguageController::class, 'updateLanguage']);
+    Route::delete('languages/{language}', [LanguageController::class, 'deleteLanguage']);
+
+    // Education routes
+    Route::post('educations', [EducationController::class, 'addEducation']);
+    Route::put('educations/{education}', [EducationController::class, 'updateEducation']);
+    Route::delete('educations/{education}', [EducationController::class, 'deleteEducation']);
+
+    // Employment routes
+    Route::post('employments', [EmploymentController::class, 'addEmployment']);
+    Route::put('employments/{employment}', [EmploymentController::class, 'updateEmployment']);
+    Route::delete('employments/{employment}', [EmploymentController::class, 'deleteEmployment']);
+
+    // Certification routes
+    Route::post('certifications', [CertificationController::class, 'addCertification']);
+    Route::put('certifications/{certification}', [CertificationController::class, 'updateCertification']);
+    Route::delete('certifications/{certification}', [CertificationController::class, 'deleteCertification']);
+
+
 });
 
 
