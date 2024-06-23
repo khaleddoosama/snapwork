@@ -38,6 +38,7 @@ class UserResource extends JsonResource
             'educations' => EducationResource::collection($this->educations),
             'Employment' => EmploymentResource::collection($this->employments),
             'certifications' => CertificationResource::collection($this->certifications),
+            'rates' => RateResource::collection($this->rates),
             'created_at' => $this->created_at,
         ];
     }

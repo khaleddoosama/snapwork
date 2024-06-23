@@ -196,6 +196,12 @@ class User extends Authenticatable implements JWTSubject
     }
 
 
+    public function rates()
+    {
+        return $this->hasMany(Rate::class, 'rated_by', 'id');
+    }
+
+
     /* methods */
     // set Picture Attribute
     public function setPictureAttribute(UploadedFile $picture)
