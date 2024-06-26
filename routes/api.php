@@ -41,6 +41,7 @@ Route::group([
 
     Route::put('/change-password', [ProfileController::class, 'changePassword']);
     Route::put('/update-skills', [ProfileController::class, 'updateSkills']);
+    Route::put('/update-picture', [ProfileController::class, 'updatePicture']);
 
     // Language routes
     Route::post('languages', [LanguageController::class, 'addLanguage']);
@@ -61,8 +62,6 @@ Route::group([
     Route::post('certifications', [CertificationController::class, 'addCertification']);
     Route::put('certifications/{certification}', [CertificationController::class, 'updateCertification']);
     Route::delete('certifications/{certification}', [CertificationController::class, 'deleteCertification']);
-
-
 });
 
 

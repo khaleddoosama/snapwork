@@ -32,13 +32,6 @@ class UserResource extends JsonResource
             'dob' => $this->dob,
             'balance' => $this->balance,
             'status' => $this->status,
-            'skills' => SkillResource::collection($this->skills),
-            'languages' => LanguageResource::collection($this->languages),
-            'projects' => ProjectResource::collection($this->projects),
-            'educations' => EducationResource::collection($this->educations),
-            'Employment' => EmploymentResource::collection($this->employments),
-            'certifications' => CertificationResource::collection($this->certifications),
-            'rates' => RateResource::collection($this->rates),
             'created_at' => $this->created_at,
         ];
     }

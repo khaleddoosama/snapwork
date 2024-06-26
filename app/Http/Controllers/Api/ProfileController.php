@@ -14,7 +14,7 @@ use App\Http\Resources\EducationResource;
 use App\Http\Resources\EmploymentResource;
 use App\Http\Resources\LanguageResource;
 use App\Http\Resources\SpecializationResource;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\ProfileResource;
 use App\Models\Certification;
 use App\Models\Education;
 use App\Models\EmploymentHistory;
@@ -47,14 +47,14 @@ class ProfileController extends Controller
         $user->update(['password' => bcrypt($data->password)]);
 
 
-        return $this->apiResponse(new UserResource($user), 'Password changed successfully', 200);
+        return $this->apiResponse(new ProfileResource($user), 'Password changed successfully', 200);
     }
 
     //updateSkills
     public function updateSkills(UpdateSkillsRequest $request)
     {
         try {
-           $data = $request->validated();
+            $data = $request->validated();
 
             $user = Auth::user();
             $skills = $request->skills;
@@ -76,7 +76,7 @@ class ProfileController extends Controller
                 }
             });
 
-            return $this->apiResponse(new UserResource($user), 'Skills updated successfully', 200);
+            return $this->apiResponse(new ProfileResource($user), 'Skills updated successfully', 200);
         } catch (Exception $e) {
             return $this->apiResponse(null, $e->getMessage(), 500);
         }
@@ -90,6 +90,19 @@ class ProfileController extends Controller
         return $this->apiResponse(SpecializationResource::collection($specializations), 'Specializations fetched successfully', 200);
     }
 
+    // update picture profile
+    public function updatePicture(Request $request)
+    {
+        $user = Auth::user();
+        $data = $request->validate([
+            'picture' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $user->update(['picture' => $request->picture]);
+
+        return $this->apiResponse(new ProfileResource($user), 'Profile picture updated successfully', 200);
+    }
+
     //getFreelancers
     public function getFreelancers($specialization_id = null)
     {
@@ -101,6 +114,6 @@ class ProfileController extends Controller
             ->take(10)
             ->get();
 
-        return $this->apiResponse(UserResource::collection($freelancers), 'Freelancers fetched successfully', 200);
+        return $this->apiResponse(ProfileResource::collection($freelancers), 'Freelancers fetched successfully', 200);
     }
 }
