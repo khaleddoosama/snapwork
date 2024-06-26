@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Abstract;
 
 use App\Http\Controllers\Api\ApiResponseTrait;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\ProfileResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,7 +29,7 @@ abstract class AbstractProfileController extends Controller
 
         $user->$relation()->create($data);
 
-        return $this->apiResponse(new UserResource($user), $message, 200);
+        return $this->apiResponse(new ProfileResource($user), $message, 200);
     }
 
     protected function updateUserData(Request $request, $model, $resource, $message)
