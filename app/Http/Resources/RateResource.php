@@ -22,7 +22,7 @@ class RateResource extends JsonResource
                 'name' => $this->ratingBy->name,
                 'email' => $this->ratingBy->email,
             ],
-            'value' => $this->averageValue(),
+            'value' => $this->average_value,
             'comment' => $this->comment,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];

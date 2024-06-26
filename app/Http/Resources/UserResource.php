@@ -10,6 +10,7 @@ class UserResource extends JsonResource
 
     public function toArray(Request $request): array
     {
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -32,6 +33,7 @@ class UserResource extends JsonResource
             'dob' => $this->dob,
             'balance' => $this->balance,
             'status' => $this->status,
+            'total_average_rating' => $this->total_average_rating,
             'skills' => SkillResource::collection($this->skills),
             'created_at' => $this->created_at,
         ];

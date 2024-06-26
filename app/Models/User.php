@@ -201,6 +201,23 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Rate::class, 'rated_by', 'id');
     }
 
+    // Calculate the total average rating for the user
+    public function getTotalAverageRatingAttribute()
+    {
+        $rates = $this->rates; // Get all rates related to this user
+        $values = [];
+
+        foreach ($rates as $rate) {
+            $values = array_merge($values, array_column($rate->rates, 'value'));
+        }
+
+        // Calculate the average
+        $average = count($values) > 0 ? array_sum($values) / count($values) : 0;
+
+        // Round the average to 2 decimal places
+        return round($average, 2);
+    }
+
 
     /* methods */
     // set Picture Attribute

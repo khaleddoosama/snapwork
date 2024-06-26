@@ -32,7 +32,7 @@ class Rate extends Model
     }
 
     // return average rate
-    public function averageValue()
+    public function getAverageValueAttribute()
     {
         $values = array_column($this->rates, 'value'); // Extract 'value' fields into a separate array
 
