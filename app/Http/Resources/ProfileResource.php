@@ -17,7 +17,6 @@ class ProfileResource extends JsonResource
         return
             [
                 'user' => new UserResource($this),
-                'skills' => SkillResource::collection($this->skills),
                 'languages' => LanguageResource::collection($this->languages),
                 'projects' => ProjectResource::collection($this->projects),
                 'educations' => EducationResource::collection($this->educations),

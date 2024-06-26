@@ -32,6 +32,7 @@ class UserResource extends JsonResource
             'dob' => $this->dob,
             'balance' => $this->balance,
             'status' => $this->status,
+            'skills' => SkillResource::collection($this->skills),
             'created_at' => $this->created_at,
         ];
     }
