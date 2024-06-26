@@ -1,6 +1,6 @@
 @extends('admin.master')
 @section('title')
-   {{ $title }}
+    {{ $title }}
 @endsection
 @section('content')
     <!-- Content Wrapper. Contains page content -->

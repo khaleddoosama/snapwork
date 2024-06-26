@@ -20,8 +20,8 @@ trait UploadTrait
         // Ensure the directory exists or create it
         $this->ensureDirectoryExists($folderName);
 
-        Image::read($picture)->resize($width, $height)->save(); // save in storage
-
+        Image::read($picture)->resize($width, $height)->save(public_path($path)); // save in storage
+        // $picture->storeAs("uploads/{$folderName}/", $name_gen); // save in public
         return $path;
     }
 
@@ -42,8 +42,10 @@ trait UploadTrait
         if (File::exists(public_path($path))) {
             File::delete(public_path($path));
         }
+
+
         // remove it from storage
-        if (Storage::exists($path)) {
+        if ($path && Storage::exists($path)) {
             Storage::delete($path);
         }
     }

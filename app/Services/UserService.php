@@ -7,24 +7,11 @@ use Illuminate\Validation\ValidationException;
 
 class UserService
 {
-    // get pending users
-    public function getPendingUsers()
+    // get client users
+    public function getClientUsers()
     {
-        return User::studentPending()->get();
+        return User::client()->get();
     }
-
-    // get active users
-    public function getActiveUsers()
-    {
-        return User::studentActive()->get();
-    }
-
-    // get inactive users
-    public function getInactiveUsers()
-    {
-        return User::studentInactive()->get();
-    }
-
 
     // update user
     public function updateUser(array $data, User $user)

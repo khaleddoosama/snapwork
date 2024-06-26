@@ -2,12 +2,10 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\CourseController;
-use App\Http\Controllers\Admin\LectureController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RolePermissionController;
-use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +14,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
 //----------------------------- Admin Routes -----------------------------//
-    
+
 
 
 Route::group(
@@ -38,9 +36,8 @@ Route::group(
 
             // User Controller
             Route::controller(UserController::class)->group(function () {
-                Route::get('/users/pending', 'pending')->name('users.pending');
-                Route::get('/users/active', 'active')->name('users.active');
-                Route::get('/users/inactive', 'inactive')->name('users.inactive');
+                Route::get('/clients', 'clients')->name('user.clients');
+                Route::get('/freelancers', 'freelancers')->name('user.freelancers');
 
                 Route::get('/users/{user}/edit', 'edit')->name('users.edit');
                 Route::put('/users/{user}', 'update')->name('users.update');
@@ -53,23 +50,6 @@ Route::group(
             Route::resource('categories', CategoryController::class)->except(['show'])->missing(function () {
                 return redirect()->route('admin.categories.index');
             });
-
-            // Course Controller
-            Route::resource('courses', CourseController::class)->except(['show'])->missing(function () {
-                return redirect()->route('admin.courses.index');
-            });
-
-            Route::controller(SectionController::class)->group(function () {
-                // show section
-                Route::get('/sections/{section}', 'show')->name('sections.show');
-            });
-
-            // Lecture Controller
-            Route::resource('lectures', LectureController::class)->except(['show'])->missing(function () {
-                return redirect()->route('admin.lectures.index');
-            });
-
-
 
 
             // Permission controller (resource)

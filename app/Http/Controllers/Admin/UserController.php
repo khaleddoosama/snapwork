@@ -19,29 +19,19 @@ class UserController extends Controller
     {
         $this->userService = $userService;
     }
-    //pending
-    public function pending()
+    //clients
+    public function clients()
     {
-        $users = $this->userService->getPendingUsers();
-        $title = __('attributes.users_pending');
+        $users = $this->userService->getClientUsers();
+        $title = __('attributes.clients');
         return view('admin.user.index', compact('users', 'title'));
     }
 
-    //active
-    public function active()
+    //freelancers
+    public function freelancers()
     {
-        $users = $this->userService->getActiveUsers();
-
-        $title = __('attributes.users_active');
-
-        return view('admin.user.index', compact('users', 'title'));
-    }
-
-    //inactive
-    public function inactive()
-    {
-        $users = $this->userService->getInactiveUsers();
-        $title = __('attributes.users_inactive');
+        $users = User::freelancer()->get();
+        $title = __('attributes.freelancers');
         return view('admin.user.index', compact('users', 'title'));
     }
 
@@ -80,7 +70,7 @@ class UserController extends Controller
         $data = $request->validate([
             'status' => 'required',
         ]);
-        
+
         $this->userService->updateUser(['status' => $request->status], $user) ? Toastr::success(__('messages.user_status_updated'), __('status.success')) : '';
 
         return redirect()->back();

@@ -18,10 +18,9 @@ class RateResource extends JsonResource
             'id' => $this->id,
             'job' => new JobResource($this->job),
             'rating_by' => [
-                'id' => $this->rating_by->id,
-                'name' => $this->rating_by->name,
-                'email' => $this->rating_by->email,
-                'picture' => $this->rating_by->picture,
+                'id' => $this->ratingBy->id,
+                'name' => $this->ratingBy->name,
+                'email' => $this->ratingBy->email,
             ],
             'value' => $this->averageValue(),
             'comment' => $this->comment,

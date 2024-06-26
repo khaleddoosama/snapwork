@@ -51,43 +51,47 @@
                       </li>
                   @endcan
 
-                  {{--  users  --}}
+                  {{--  clients  --}}
                   {{-- @can('user.list') --}}
-                  <li class="nav-item @if (Request::is('*/admin/users') || Request::is('*/admin/users/*')) menu-open @endif">
-                      <a href="#" class="nav-link  @if (Request::is('*/admin/users') || Request::is('*/admin/users/*')) active @endif">
+                  <li class="nav-item @if (Request::is('*/admin/clients') ||
+                          Request::is('*/admin/clients/*') ||
+                          Request::is('*/admin/freelancers') ||
+                          Request::is('*/admin/freelancers/*')) menu-open @endif">
+                      <a href="#" class="nav-link  @if (Request::is('*/admin/clients') ||
+                              Request::is('*/admin/clients/*') ||
+                              Request::is('*/admin/freelancers') ||
+                              Request::is('*/admin/freelancers/*')) active @endif">
                           <i class="nav-icon fas fa-users"></i>
                           <p>
                               {{ __('attributes.users') }}
                           </p>
                       </a>
-                      <ul class="nav nav-treeview" style=" @if (!(Request::is('*/admin/users') || Request::is('*/admin/users/*'))) display: none @endif">
+                      <ul class="nav nav-treeview" style=" @if (
+                          !(Request::is('*/admin/clients') ||
+                              Request::is('*/admin/clients/*') ||
+                              Request::is('*/admin/freelancers') ||
+                              Request::is('*/admin/freelancers/*')
+                          )) display: none @endif">
                           <li class="nav-item">
-                              <a href="{{ route('admin.users.pending') }}"
-                                  class="nav-link @if (Request::is('*/admin/users/pending') || Request::is('*/admin/users/pending/*')) active @endif">
+                              <a href="{{ route('admin.user.clients') }}"
+                                  class="nav-link @if (Request::is('*/admin/clients') || Request::is('*/admin/clients/*')) active @endif">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>
-                                      {{ __('attributes.users_pending') }}
+                                      {{ __('attributes.clients') }}
                                   </p>
                               </a>
                           </li>
+
                           <li class="nav-item">
-                              <a href="{{ route('admin.users.active') }}"
-                                  class="nav-link @if (Request::is('*/admin/users/active') || Request::is('*/admin/users/active/*')) active @endif">
+                              <a href="{{ route('admin.user.freelancers') }}"
+                                  class="nav-link @if (Request::is('*/admin/freelancers') || Request::is('*/admin/freelancers/*')) active @endif">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>
-                                      {{ __('attributes.users_active') }}
+                                      {{ __('attributes.freelancers') }}
                                   </p>
                               </a>
                           </li>
-                          <li class="nav-item">
-                              <a href="{{ route('admin.users.inactive') }}"
-                                  class="nav-link @if (Request::is('*/admin/users/inactive') || Request::is('*/admin/users/inactive/*')) active @endif">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>
-                                      {{ __('attributes.users_inactive') }}
-                                  </p>
-                              </a>
-                          </li>
+
                       </ul>
                   </li>
                   {{-- @endcan --}}
@@ -106,16 +110,7 @@
                   {{-- @endcan --}}
 
 
-                  {{-- Courses --}}
-                  {{-- @can('course.list') --}}
-                  <li class="nav-item">
-                      <a href="{{ route('admin.courses.index') }}"
-                          class="nav-link @if (Request::is('*/admin/courses') || Request::is('*/admin/courses/*')) active @endif">
-                          <span class="icon nav-icon"><ion-icon name="school-outline"></ion-icon></span>
-                          <span class="title">{{ __('attributes.courses') }}</span>
-                      </a>
-                  </li>
-                  {{-- @endcan --}}
+
 
 
 

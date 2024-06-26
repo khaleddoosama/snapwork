@@ -79,22 +79,22 @@ class User extends Authenticatable implements JWTSubject
         return $this->role === 'admin';
     }
 
-    // scope student and pending
-    public function scopeStudentPending($query)
+    // scope client and pending
+    public function scopeClientPending($query)
     {
-        return $query->where('role', 'student')->where('status', 0);
+        return $query->where('role', 'client')->where('status', 0);
     }
 
-    // scope student and active
-    public function scopeStudentActive($query)
+    // scope client and active
+    public function scopeClientActive($query)
     {
-        return $query->where('role', 'student')->where('status', 1);
+        return $query->where('role', 'client')->where('status', 1);
     }
 
-    // scope student and inactive
-    public function scopeStudentInactive($query)
+    // scope client and inactive
+    public function scopeClientInactive($query)
     {
-        return $query->where('role', 'student')->where('status', 2)->orWhere('status', 3);
+        return $query->where('role', 'client')->where('status', 2)->orWhere('status', 3);
     }
 
     /* Relations */
