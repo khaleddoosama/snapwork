@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProfileResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -83,7 +84,7 @@ class AuthController extends Controller
 
     public function userProfile()
     {
-        return $this->apiResponse(new UserResource(auth('api')->user()), 'ok', 200);
+        return $this->apiResponse(new ProfileResource(auth('api')->user()), 'ok', 200);
     }
 
 
@@ -112,7 +113,7 @@ class AuthController extends Controller
 
             $user->update($attributes->validated());
 
-            return $this->apiResponse(new UserResource($user), 'Profile updated successfully', 200);
+            return $this->apiResponse(new ProfileResource($user), 'Profile updated successfully', 200);
         } catch (QueryException $e) {
             return $this->apiResponse(null, 'An error occurred while updating the profile: ' . $e->getMessage(), 500);
         } catch (ModelNotFoundException $e) {
