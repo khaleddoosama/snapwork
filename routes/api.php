@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\LanguageController;
 use App\Http\Controllers\Api\MessageController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RateController;
 use App\Http\Controllers\Api\RequestChangeController;
@@ -112,6 +113,10 @@ Route::middleware('jwt.verify')->group(function () {
     Route::get('/messages/{user_id}', [MessageController::class, 'show']);
     Route::post('/messages', [MessageController::class, 'store']);
     Route::put('/messages/{message}/read', [MessageController::class, 'markAsRead']);
+
+    // Notification
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::put('/notifications/read/{id}', [NotificationController::class, 'read']);
 });
 
 
