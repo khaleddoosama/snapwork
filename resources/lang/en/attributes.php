@@ -74,4 +74,10 @@ return [
     'videos' => 'Videos',
     'lecture' => 'Lecture',
     'lectures' => 'Lectures',
+    'client' => 'Client',
+    'clients' => 'Clients',
+    'freelancer' => 'Freelancer',
+    'freelancers' => 'Freelancers',
+    'specialization' => 'Specialization',
+    'specializations' => 'Specializations',
 ];

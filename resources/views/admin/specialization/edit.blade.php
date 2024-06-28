@@ -1,13 +1,14 @@
 @extends('admin.master')
 @section('title')
-    {{ __('buttons.create_category') }}
+    {{ __('buttons.edit_specialization') }}
 @endsection
 @section('content')
     <div class="content-wrapper">
 
+
         <!-- Content Wrapper. Contains page content -->
         <!-- Content Header (Page header) -->
-        <x-custom.header-page title="{{ __('buttons.create_category') }}" />
+        <x-custom.header-page title="{{ __('buttons.edit_specialization') }}" />
 
         <!-- Main content -->
         <section class=" content">
@@ -18,21 +19,23 @@
                         <!-- jquery validation -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">{{ __('buttons.create') }}<small>
-                                        {{ __('attributes.category') }}</small></h3>
+                                <h3 class="card-title">{{ __('buttons.edit') }}<small>
+                                        {{ __('attributes.specialization') }}</small></h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form id="form1" action="{{ route('admin.categories.store') }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form id="form1" action="{{ route('admin.specialization.update', $specialization->id) }}"
+                                method="POST" enctype="multipart/form-data">
+                                @method('PUT')
                                 @csrf
                                 <div class="card-body row">
-                                    <x-custom.form-group class="col-md-6" type="text" name="name" />
+                                    <x-custom.form-group class="col-md-6" type="text" name="name"
+                                        value="{{ $specialization->name }}" />
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
                                     <x-primary-button
-                                        class="btn btn-primary"><b>{{ __('buttons.add') }}</b></x-primary-button>
+                                        class="btn btn-primary"><b>{{ __('buttons.update') }}</b></x-primary-button>
                                 </div>
                             </form>
                         </div>

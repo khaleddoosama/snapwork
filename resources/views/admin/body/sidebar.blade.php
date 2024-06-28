@@ -96,14 +96,14 @@
                   </li>
                   {{-- @endcan --}}
 
-                  {{--  categories  --}}
-                  {{-- @can('category.list') --}}
+                  {{--  specializations  --}}
+                  {{-- @can('specialization.list') --}}
                   <li class="nav-item">
-                      <a href="{{ route('admin.categories.index') }}"
-                          class="nav-link @if (Request::is('*/admin/categories') || Request::is('*/admin/categories/*')) active @endif">
-                          <i class="nav-icon fas fa-th"></i>
+                      <a href="{{ route('admin.specialization.index') }}"
+                          class="nav-link @if (Request::is('*/admin/specialization') || Request::is('*/admin/specialization/*')) active @endif">
+                          <i class="nav-icon fas fa-cogs"></i>
                           <p>
-                              {{ __('attributes.categories') }}
+                              {{ __('attributes.specializations') }}
                           </p>
                       </a>
                   </li>

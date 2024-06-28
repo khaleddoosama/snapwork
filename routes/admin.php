@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RolePermissionController;
+use App\Http\Controllers\Admin\SpecializationController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -47,8 +48,8 @@ Route::group(
             });
 
             // Category Controller
-            Route::resource('categories', CategoryController::class)->except(['show'])->missing(function () {
-                return redirect()->route('admin.categories.index');
+            Route::resource('specialization', SpecializationController::class)->except(['show'])->missing(function () {
+                return redirect()->route('admin.specialization.index');
             });
 
 
