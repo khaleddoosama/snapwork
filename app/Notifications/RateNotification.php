@@ -7,22 +7,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class InvitedNotification extends Notification implements ShouldQueue
+class RateNotification extends Notification
 {
     use Queueable;
 
+    protected $rate;
 
-    protected $inviter;
-    protected $invitee;
-    protected $job;
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct($inviter, $invitee, $job)
+    public function __construct($rate)
     {
-        $this->inviter = $inviter;
-        $this->invitee = $invitee;
-        $this->job = $job;
+        $this->rate = $rate;
     }
 
     /**
@@ -41,8 +34,8 @@ class InvitedNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line("{$this->inviter->name} has invited you to join.")
-            ->action('Accept Invitation', url('/'))
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
             ->line('Thank you for using our application!');
     }
 
@@ -54,9 +47,9 @@ class InvitedNotification extends Notification implements ShouldQueue
     public function toDatabase($notifiable)
     {
         return [
-            'title' => 'دعوتك للانضمام',
-            'message' => "لقد دعاك {$this->job->title} للعمل علي {$this->inviter->name}",
-            'url' => url('/api/jobs/' . $this->job->id),
+            'title' => 'تم تقييمك',
+            'message' => "لقد تلقيت تقييم جديد من {$this->rate->rating_by->name}",
+            'url' => url('/api/rate/' . $this->rate->id),
         ];
     }
 }

@@ -18,4 +18,14 @@ class RequestChange extends Model
         $this->attributes['status'] = $value;
         $this->attributes['response_at'] = now();
     }
+
+    public function job()
+    {
+        return $this->belongsTo(Job::class, 'job_id');
+    }
+
+    public function application()
+    {
+        return $this->belongsTo(Application::class, 'application_id');
+    }
 }

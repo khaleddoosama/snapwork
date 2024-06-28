@@ -95,7 +95,7 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $data = $request->validate([
-            'picture' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'picture' => 'required|image',
         ]);
 
         $user->update(['picture' => $request->picture]);

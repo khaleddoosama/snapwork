@@ -7,6 +7,7 @@ use App\Http\Requests\Api\MessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use App\Models\User;
+use App\Notifications\MessageNotification;
 use App\Services\Api\MessageService;
 use Illuminate\Http\Request;
 
@@ -32,6 +33,10 @@ class MessageController extends Controller
         $data = $request->validated();
 
         $message = $this->messageService->save($data);
+
+        $user = User::where('id', $message->receiver_id)->first();
+        $user->notify(new MessageNotification($message));
+
         return $this->apiResponse(new MessageResource($message), 'Message sent successfully', 200);
     }
 

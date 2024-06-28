@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\RateRequest;
 use App\Http\Resources\RateResource;
 use App\Models\Rate;
+use App\Notifications\RateNotification;
 use Illuminate\Http\Request;
 
 class RateController extends Controller
@@ -22,6 +23,10 @@ class RateController extends Controller
     {
         $data = $request->validated();
         $rate = Rate::create($data);
+
+        $user = $rate->rated_by;
+        $user->notify(new RateNotification($rate));
+
         return $this->apiResponse(new RateResource($rate), 'Rate created successfully', 200);
     }
 

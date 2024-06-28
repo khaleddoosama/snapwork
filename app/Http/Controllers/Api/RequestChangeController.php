@@ -7,6 +7,7 @@ use App\Http\Requests\Api\RequestChangeRequest;
 use App\Models\Application;
 use App\Models\Job;
 use App\Models\RequestChange;
+use App\Notifications\RequestChangeNotification;
 use App\Services\Api\RequestChangeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -41,6 +42,9 @@ class RequestChangeController extends Controller
 
         $request_change = $this->RequestChangeService->requestChange($data);
 
+        // Notification
+        $job->client->notify(new RequestChangeNotification(auth()->user(), $request_change, 'change'));
+
         return $this->apiResponse($request_change, 'Request change created successfully', 201);
     }
 
@@ -52,6 +56,9 @@ class RequestChangeController extends Controller
         $data = $this->prepareRequestChangeData($application, $job, 'submit');
         $request_change = $this->RequestChangeService->requestChange($data);
 
+        // Notification
+        $job->client->notify(new RequestChangeNotification(auth()->user(), $request_change, 'submit'));
+
         return $this->apiResponse($request_change, 'Request submit created successfully', 201);
     }
 
@@ -61,6 +68,9 @@ class RequestChangeController extends Controller
 
         $data = $this->prepareRequestChangeData($application, $job, 'cancel');
         $request_change = $this->RequestChangeService->requestChange($data);
+
+        // Notification
+        $job->client->notify(new RequestChangeNotification(auth()->user(), $request_change, 'cancel'));
 
         return $this->apiResponse($request_change, 'Request cancel created successfully', 201);
     }
