@@ -47,10 +47,29 @@ class Job extends Model
     {
         return $this->hasMany(RequestChange::class, 'job_id');
     }
-    
+
     // return hired application
     public function hiredApplication()
     {
         return $this->hasOne(Application::class, 'job_id')->where('status', 'hired');
+    }
+
+    // return rates
+    public function rates()
+    {
+        return $this->hasMany(Rate::class, 'job_id');
+    }
+
+
+    // return average rate
+    public function getAverageValueAttribute()
+    {
+        $values = array_column($this->rates, 'value'); // Extract 'value' fields into a separate array
+
+        // Calculate the average
+        $average = count($values) > 0 ? array_sum($values) / count($values) : 0;
+
+        // Round the average to 2 decimal place
+        return round($average, 2);
     }
 }

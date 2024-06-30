@@ -110,6 +110,18 @@
                   {{-- @endcan --}}
 
 
+                  {{-- jobs --}}
+                  {{-- @can('job.list') --}}
+                  <li class="nav-item">
+                      <a href="{{ route('admin.jobs.index') }}"
+                          class="nav-link @if (Request::is('*/admin/jobs') || Request::is('*/admin/jobs/*')) active @endif">
+                          <i class="nav-icon fas fa-briefcase"></i>
+                          <p>
+                              {{ __('attributes.jobs') }}
+                          </p>
+                      </a>
+                  </li>
+                  {{-- @endcan --}}
 
 
 

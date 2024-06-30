@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RolePermissionController;
@@ -52,6 +53,12 @@ Route::group(
                 return redirect()->route('admin.specialization.index');
             });
 
+            // Job Controller
+            Route::controller(JobController::class)->group(function () {
+                Route::get('/jobs', 'index')->name('jobs.index');
+                Route::get('/jobs/{job}', 'show')->name('jobs.show');
+                Route::put('/jobs/{job}/status', 'status')->name('jobs.status');
+            });
 
             // Permission controller (resource)
             // Route::resource('permission', RolePermissionController::class)->except(['show']);
