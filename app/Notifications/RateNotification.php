@@ -48,7 +48,7 @@ class RateNotification extends Notification
     {
         return [
             'title' => 'تم تقييمك',
-            'message' => "لقد تلقيت تقييم جديد من {$this->rate->rating_by->name}",
+            'message' => "لقد تلقيت تقييم جديد من {$this->rate->ratingBy->name}",
             'url' => url('/api/rate/' . $this->rate->id),
         ];
     }

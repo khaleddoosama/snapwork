@@ -24,7 +24,8 @@ class RateController extends Controller
         $data = $request->validated();
         $rate = Rate::create($data);
 
-        $user = $rate->rated_by;
+        $user = $rate->ratedBy;
+
         $user->notify(new RateNotification($rate));
 
         return $this->apiResponse(new RateResource($rate), 'Rate created successfully', 200);
