@@ -74,6 +74,9 @@ Route::get('/jobs/{job}', [JobController::class, 'show']);
 
 Route::middleware('jwt.verify')->group(function () {
 
+    // get prev freelancers
+    Route::get('/prev-freelancers', [ProfileController::class, 'prevFreelancers']);
+
     // jobs
     Route::get('/jobs', [JobController::class, 'getForClient']);
     Route::post('/jobs', [JobController::class, 'store']);
@@ -117,6 +120,7 @@ Route::middleware('jwt.verify')->group(function () {
     // Notification
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::put('/notifications/read/{id}', [NotificationController::class, 'read']);
+
 });
 
 

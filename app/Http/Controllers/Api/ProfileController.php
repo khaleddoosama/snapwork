@@ -15,6 +15,7 @@ use App\Http\Resources\EmploymentResource;
 use App\Http\Resources\LanguageResource;
 use App\Http\Resources\SpecializationResource;
 use App\Http\Resources\ProfileResource;
+use App\Http\Resources\UserResource;
 use App\Models\Certification;
 use App\Models\Education;
 use App\Models\EmploymentHistory;
@@ -115,5 +116,22 @@ class ProfileController extends Controller
             ->get();
 
         return $this->apiResponse(ProfileResource::collection($freelancers), 'Freelancers fetched successfully', 200);
+    }
+
+    // return users freelancers
+    public function prevFreelancers()
+    {
+        $user = Auth::user();
+
+        $jobs = $user->jobs()->get();
+
+        $freelancers = [];
+        foreach ($jobs as $job) {
+            if ($job->hiredApplication) {
+                $freelancers[] = $job->hiredApplication->freelancer;
+            }
+        }
+
+        return $this->apiResponse(UserResource::collection($freelancers), 'Prev Freelancers fetched successfully', 200);
     }
 }
