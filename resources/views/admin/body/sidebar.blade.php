@@ -123,9 +123,44 @@
                   </li>
                   {{-- @endcan --}}
 
+                  {{-- applications --}}
+                  {{-- @can('application.list') --}}
+                  <li class="nav-item">
+                      <a href="{{ route('admin.applications.index') }}"
+                          class="nav-link @if (Request::is('*/admin/applications') || Request::is('*/admin/applications/*')) active @endif">
+                          <i class="nav-icon fas fa-envelope"></i>
+                          <p>
+                              {{ __('attributes.applications') }}
+                          </p>
+                      </a>
+                  </li>
+                  {{-- @endcan --}}
 
+                  {{-- RequestsChange --}}
+                  {{-- @can('request_change.list') --}}
+                  <li class="nav-item">
+                      <a href="{{ route('admin.request_changes.index') }}"
+                          class="nav-link @if (Request::is('*/admin/request_changes') || Request::is('*/admin/request_changes/*')) active @endif">
+                          <i class="nav-icon fas fa-exchange-alt"></i>
+                          <p>
+                              {{ __('attributes.request_changes') }}
+                          </p>
+                      </a>
+                  </li>
+                  {{-- @endcan --}}
 
-
+                  {{-- rates --}}
+                  {{-- @can('rate.list') --}}
+                  <li class="nav-item">
+                      <a href="{{ route('admin.rates.index') }}"
+                          class="nav-link @if (Request::is('*/admin/rates') || Request::is('*/admin/rates/*')) active @endif">
+                          <i class="nav-icon fas fa-star"></i>
+                          <p>
+                              {{ __('attributes.rates') }}
+                          </p>
+                      </a>
+                  </li>
+                  {{-- @endcan --}}
 
                   {{-- Permissions --}}
                   {{-- @can('permission.list')
