@@ -162,6 +162,32 @@
                   </li>
                   {{-- @endcan --}}
 
+                  {{-- invitations --}}
+                  {{-- @can('invitation.list') --}}
+                  <li class="nav-item">
+                      <a href="{{ route('admin.invitations.index') }}"
+                          class="nav-link @if (Request::is('*/admin/invitations') || Request::is('*/admin/invitations/*')) active @endif">
+                          <i class="nav-icon fas fa-user-plus"></i>
+                          <p>
+                              {{ __('attributes.invitations') }}
+                          </p>
+                      </a>
+                  </li>
+                  {{-- @endcan --}}
+
+                  {{-- messages --}}
+                  {{-- @can('message.list') --}}
+                  <li class="nav-item">
+                      <a href="{{ route('admin.messages.index') }}"
+                          class="nav-link @if (Request::is('*/admin/messages') || Request::is('*/admin/messages/*')) active @endif">
+                          <i class="nav-icon fas fa-comments"></i>
+                          <p>
+                              {{ __('attributes.messages') }}
+                          </p>
+                      </a>
+                  </li>
+                  {{-- @endcan --}}
+
                   {{-- Permissions --}}
                   {{-- @can('permission.list')
                       <li class="nav-item">
