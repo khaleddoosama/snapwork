@@ -150,7 +150,7 @@ class User extends Authenticatable implements JWTSubject
     // relation Invitations
     public function invitations()
     {
-        return $this->hasMany(Invitation::class);
+        return $this->hasMany(Invitation::class, 'freelancer_id', 'id');
     }
 
     // relation Applications

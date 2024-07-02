@@ -44,6 +44,7 @@ Route::group(
                 Route::get('/clients', 'clients')->name('user.clients');
                 Route::get('/freelancers', 'freelancers')->name('user.freelancers');
 
+                Route::get('/users/{user}', 'show')->name('users.show');
                 Route::get('/users/{user}/edit', 'edit')->name('users.edit');
                 Route::put('/users/{user}', 'update')->name('users.update');
                 Route::put('/users/{user}/status', 'status')->name('users.status');

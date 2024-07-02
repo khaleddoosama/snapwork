@@ -16,14 +16,7 @@
                     <div class="col-12">
 
                         <div class="card">
-                            {{-- @can('user.create')
-                                <div class="card-header" style="display: flex;justify-content: end">
-                                    <a href="{{ route('user.all_user.create') }}" class="btn btn-primary"
-                                        style="color: white; text-decoration: none;">
-                                        {{ __('main.create_user') }}
-                                    </a>
-                                </div>
-                            @endcan --}}
+
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
@@ -54,6 +47,10 @@
 
 
                                                 <td>
+                                                    {{-- show --}}
+                                                    <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-primary" title="{{ __('buttons.show') }}">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
                                                     {{-- @can('user.edit') --}}
                                                     <x-custom.edit-button route="admin.users.edit" :id="$user->id" />
 

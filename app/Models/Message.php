@@ -13,6 +13,11 @@ class Message extends Model
 
     public $timestamps = false;
 
+    protected $casts = [
+        'sent_at' => 'datetime',
+        'read_at' => 'datetime',
+    ];
+
     public function sender()
     {
         return $this->belongsTo(User::class, 'sender_id');

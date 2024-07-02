@@ -75,4 +75,25 @@ class UserController extends Controller
 
         return redirect()->back();
     }
+
+    // show
+    public function show(User $user)
+    {
+        $title = __('attributes.user');
+        $user->load(
+            'specialization',
+            'skills',
+            'languages',
+            'educations',
+            'employments',
+            'certifications',
+            'jobs',
+            'invitations',
+            'applications',
+            'bookmarks',
+            'messages',
+            'rates'
+        );
+        return view('admin.user.show', compact('user', 'title'));
+    }
 }
