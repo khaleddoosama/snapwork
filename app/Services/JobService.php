@@ -27,4 +27,13 @@ class JobService
         $job = Job::where('id', $id)->with(['client', 'specialization', 'applications', 'requestChanges', 'hiredApplication', 'rates'])->first();
         return $job;
     }
+
+    // update job status
+    public function updateJobStatus($request, $id)
+    {
+        $job = $this->getJobById($id);
+        $job->status = $request->status;
+        $job->save();
+        return $job;
+    }
 }

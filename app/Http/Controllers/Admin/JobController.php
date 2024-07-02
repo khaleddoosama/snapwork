@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\JobService;
 use Illuminate\Http\Request;
+use Yoeunes\Toastr\Facades\Toastr;
 
 class JobController extends Controller
 {
@@ -24,12 +25,18 @@ class JobController extends Controller
     }
 
     // show
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $job = $this->jobService->getJobById($id);
         $title = __('attributes.job');
         return view('admin.job.show', compact('title', 'job'));
     }
+
+    // status
+    public function status(Request $request, $id)
+    {
+        $this->jobService->updateJobStatus($request, $id);
+        Toastr::success(__('messages.job_status_updated'), __('status.success'));
+        return redirect()->back();
+    }
 }
-
-

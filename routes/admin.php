@@ -60,7 +60,7 @@ Route::group(
             Route::controller(JobController::class)->group(function () {
                 Route::get('/jobs', 'index')->name('jobs.index');
                 Route::get('/jobs/{job}', 'show')->name('jobs.show');
-                // Route::put('/jobs/{job}/status', 'status')->name('jobs.status');
+                Route::put('/jobs/{job}/status', 'status')->name('jobs.status');
             });
 
             // Application Controller
@@ -86,7 +86,6 @@ Route::group(
             // Invitation Controller
             Route::controller(InvitationController::class)->group(function () {
                 Route::get('/invitations', 'index')->name('invitations.index');
-                // Route::get('/invitations/{invitation}', 'show')->name('invitations.show');
             });
 
             // Message Controller

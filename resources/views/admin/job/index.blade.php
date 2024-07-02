@@ -44,9 +44,31 @@
                                                 <td>{{ $job->status }}</td>
                                                 <td>
                                                     <a href="{{ route('admin.jobs.show', $job) }}"
-                                                        title="{{ __('main.show') }}">
+                                                        class="btn btn-sm btn-info" title="{{ __('main.show') }}">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
+                                                    @if ($job->status == 'hide')
+                                                        <form action="{{ route('admin.jobs.status', $job) }}"
+                                                            method="POST" style="display: inline-block;">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <input type="hidden" name="status" value="show">
+                                                            <button type="submit" title="Show"
+                                                                class="btn btn-sm btn-success">
+                                                                <i class="fas fa-check"></i>
+                                                        </form>
+                                                    @else
+                                                        <form action="{{ route('admin.jobs.status', $job) }}"
+                                                            method="POST" style="display: inline-block;">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <input type="hidden" name="status" value="hide">
+                                                            <button type="submit" title="Hide"
+                                                                class="btn btn-sm btn-danger">
+                                                                <i class="fas fa-times"></i>
+                                                        </form>
+                                                    @endif
+
                                                 </td>
                                             </tr>
                                         @endforeach
