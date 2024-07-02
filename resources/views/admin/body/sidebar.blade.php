@@ -109,6 +109,19 @@
                   </li>
                   {{-- @endcan --}}
 
+                  {{--   skills  --}}
+                  {{-- @can('skill.list') --}}
+                  <li class="nav-item">
+                      <a href="{{ route('admin.skill.index') }}"
+                          class="nav-link @if (Request::is('*/admin/skill') || Request::is('*/admin/skill/*')) active @endif">
+                          <i class="nav-icon fas fa-code"></i>
+                          <p>
+                              {{ __('attributes.skills') }}
+                          </p>
+                      </a>
+                  </li>
+                  {{-- @endcan --}}
+
 
                   {{-- jobs --}}
                   {{-- @can('job.list') --}}

@@ -72,5 +72,5 @@
     "register" => "Register",
     "reset_password" => "Reset Password",
     "resend_verification_email" => "Resend Verification Email",
-
+    "create_skill" => "Create Skill",
 );

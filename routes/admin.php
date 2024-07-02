@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\RateController;
 use App\Http\Controllers\Admin\RequestChangeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RolePermissionController;
+use App\Http\Controllers\Admin\SkillController;
 use App\Http\Controllers\Admin\SpecializationController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\UserController;
@@ -51,9 +52,14 @@ Route::group(
                 Route::put('/{user}/password', 'updatePassword')->name('users.update.password');
             });
 
-            // Category Controller
+            // Specialization Controller
             Route::resource('specialization', SpecializationController::class)->except(['show'])->missing(function () {
                 return redirect()->route('admin.specialization.index');
+            });
+
+            // Skills Controller
+            Route::resource('skill', SkillController::class)->except(['show'])->missing(function () {
+                return redirect()->route('admin.skill.index');
             });
 
             // Job Controller

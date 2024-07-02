@@ -117,4 +117,6 @@ return [
     'read_at' => 'Read At',
     'sender' => 'Sender',
     'receiver' => 'Receiver',
+    'skills' => 'Skills',
+    'skill' => 'Skill',
 ];
