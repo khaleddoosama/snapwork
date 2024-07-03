@@ -43,9 +43,9 @@ class ProfileController extends Controller
     public function changePassword(ChangePasswordRequest $request)
     {
         $data = $request->validated();
-
         $user = Auth::user();
-        $user->update(['password' => bcrypt($data->password)]);
+
+        $user->update(['password' => bcrypt($data['password'])]);
 
 
         return $this->apiResponse(new ProfileResource($user), 'Password changed successfully', 200);
