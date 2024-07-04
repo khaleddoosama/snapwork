@@ -15,7 +15,6 @@ class CreateTransactionsTable extends Migration
             $table->enum('type', ['deposit', 'payment', 'withdrawal']);
             $table->decimal('amount', 10, 2);
             $table->string('status'); // e.g., 'pending', 'completed', 'failed'
-            $table->string('paymob_order_id');
             $table->timestamps();
         });
     }
