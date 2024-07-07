@@ -10,7 +10,7 @@ class OrderedDescScope implements Scope
 {
     protected $column;
 
-    public function __construct($column = 'id')
+    public function __construct($column = 'created_at')
     {
         $this->column = $column;
     }
