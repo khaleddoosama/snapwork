@@ -13,6 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Http\UploadedFile;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Scopes\OrderedDescScope;
 
 use Korridor\LaravelHasManyMerged\HasManyMerged;
 use Korridor\LaravelHasManyMerged\HasManyMergedRelation;
@@ -21,6 +22,10 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, UploadTrait, Sluggable, HasManyMergedRelation;
 
+    protected static function booted()
+    {
+        static::addGlobalScope(new OrderedDescScope);
+    }
 
     protected $guarded = [];
 
