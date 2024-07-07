@@ -56,8 +56,8 @@ class ProfileController extends Controller
     {
         try {
             $data = $request->validated();
-
             $user = Auth::user();
+            
             $skills = $request->skills;
             $existingSkills = $user->skills()->pluck('name')->toArray();
 
