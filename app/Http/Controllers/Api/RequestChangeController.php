@@ -6,12 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\RequestChangeRequest;
 use App\Models\Application;
 use App\Models\Job;
+use App\Models\Escrow;
+use App\Models\Transaction;
 use App\Models\RequestChange;
 use App\Notifications\RequestChangeNotification;
 use App\Services\Api\RequestChangeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
+use GuzzleHttp\Client;
 
 class RequestChangeController extends Controller
 {
