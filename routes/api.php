@@ -127,5 +127,4 @@ Route::middleware('jwt.verify')->group(function () {
 
 Route::prefix('payment')->middleware(['jwt.verify'])->group(function () {
     Route::post('initiate', [PaymentGatewayController::class, 'initiate'])->name('payment.initiate');
-    Route::post('withdraw', [PaymentGatewayController::class, 'withdraw'])->name('payment.withdraw');
 });
