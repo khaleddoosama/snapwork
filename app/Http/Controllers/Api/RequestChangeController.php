@@ -7,6 +7,7 @@ use App\Http\Requests\Api\RequestChangeRequest;
 use App\Models\Application;
 use App\Models\Job;
 use App\Models\Escrow;
+use App\Models\User;
 use App\Models\Transaction;
 use App\Models\RequestChange;
 use App\Notifications\RequestChangeNotification;
