@@ -119,4 +119,6 @@ return [
     'receiver' => 'Receiver',
     'skills' => 'Skills',
     'skill' => 'Skill',
+    'location_type' => 'Location Type',
+    
 ];

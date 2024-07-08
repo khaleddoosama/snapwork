@@ -8,7 +8,6 @@
     'success' => 'نجاح',
     'warning' => 'تحذير',
     'active' => 'نشط',
-    'inactive' => 'غير نشط',
     'pending' => 'قيد الانتظار',
     'approved' => 'موافق عليه',
     'rejected' => 'مرفوض',

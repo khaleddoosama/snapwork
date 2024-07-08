@@ -66,7 +66,7 @@ class AppServiceProvider extends ServiceProvider
             return new RateService();
         });
         $this->app->singleton(ServicesRequestChangeService::class, function ($app) {
-            return new RequestChangeService();
+            return new ServicesRequestChangeService();
         });
         $this->app->singleton(UserService::class, function ($app) {
             return new UserService();
