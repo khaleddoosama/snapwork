@@ -28,4 +28,11 @@ class ApplicationService
         $application->job->update(['status' => 'hired']);
         return $application;
     }
+
+    public function unhire(Application $application)
+    {
+        $application->update(['status' => null]);
+        $application->job->update(['status' => null]);
+        return $application;
+    }
 }

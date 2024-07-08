@@ -96,6 +96,7 @@ Route::middleware('jwt.verify')->group(function () {
 
     // Hire
     Route::put('/hire/{job:slug}/{application:slug}', [ApplicationController::class, 'hire']);
+    Route::delete('/hire/{job:slug}/{application:slug}', [ApplicationController::class, 'unhire']);
 
     // request change
     Route::post('/request-change/{job:slug}/{application:slug}/', [RequestChangeController::class, 'requestChange']);

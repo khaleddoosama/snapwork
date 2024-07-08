@@ -105,7 +105,6 @@ class PaymentGatewayController extends Controller
                 'amount_cents' => $amount * 100,  // Convert to cents
                 'currency' => 'EGP',
                 'items' => [],
-                'merchant_order_id' => (string) $jobId  // Linking job ID to the order for tracking
             ]
         ]);
         return json_decode($response->getBody()->getContents());

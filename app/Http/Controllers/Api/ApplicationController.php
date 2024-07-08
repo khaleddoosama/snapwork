@@ -64,4 +64,18 @@ class ApplicationController extends Controller
         $application = $this->applicationService->hire($application);
         return $this->apiResponse(new ApplicationResource($application), 'Hired', 200);
     }
+
+
+    public function unhire(Job $job, Application $application)
+    {
+        $this->authorize('hire', $job);
+
+        // check if the application belongs to the job
+        if ($application->job_id != $job->id) {
+            return $this->apiResponse(null, 'Not Responsible', 401);
+        }
+
+        $application = $this->applicationService->unhire($application);
+        return $this->apiResponse(new ApplicationResource($application), 'Unhired', 200);
+    }
 }
