@@ -6,12 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\RequestChangeRequest;
 use App\Models\Application;
 use App\Models\Job;
+use App\Models\Escrow;
+use App\Models\User;
+use App\Models\Transaction;
 use App\Models\RequestChange;
 use App\Notifications\RequestChangeNotification;
 use App\Services\Api\RequestChangeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
+use GuzzleHttp\Client;
 
 class RequestChangeController extends Controller
 {
@@ -152,16 +158,68 @@ class RequestChangeController extends Controller
     }
 
     private function handleSubmit($request_change)
-    {
-        $job = Job::find($request_change->job_id);
-        if ($job && $job->status === 'hired') {
-            $job->status = 'Done';
-            Application::where('job_id', $request_change->job_id)->update(['status' => 'Done']);
-            $job->save();
-        } else {
-            throw ValidationException::withMessages(['request_change' => 'Request change cannot be submitted under current job status.']);
+{
+    $job = Job::find($request_change->job_id);
+    $clientId = auth()->user()->id; // Fetching the authenticated client's ID
+
+    if ($job && $job->status === 'hired') {
+        // Check if the authenticated user is the client for this job
+        if ($job->client_id != $clientId) {
+            throw ValidationException::withMessages(['request_change' => 'Not authorized to update this job.']);
         }
+
+        // Check if the application is the hired application for this job
+        $hiredApplication = Application::where('job_id', $request_change->job_id)->where('status', 'hired')->first();
+        if (!$hiredApplication) {
+            throw ValidationException::withMessages(['request_change' => 'No hired application found for this job.']);
+        }
+
+        // Check if there's an escrow for this job
+        $escrow = Escrow::where('job_id', $request_change->job_id)->where('status', 'held')->first();
+        if (!$escrow) {
+            throw ValidationException::withMessages(['request_change' => 'No funds to withdraw or already withdrawn.']);
+        }
+
+        try {
+            // Begin transaction
+            DB::beginTransaction();
+
+            // Update job and application statuses
+            $job->status = 'done';
+            Application::where('job_id', $request_change->job_id)->update(['status' => 'done']);
+            $job->save();
+
+            // Update escrow status to released
+            $escrow->update(['status' => 'released']);
+
+            // Record the transaction
+            $transaction = Transaction::create([
+                'user_id' => $hiredApplication->freelancer_id, // Record transaction for the freelancer
+                'escrow_id' => $escrow->id,
+                'amount' => $escrow->amount,
+                'status' => 'completed',
+                'paymob_order_id' => 'NA',
+                'type' => 'withdrawal'
+            ]);
+
+            // Update freelancer balance
+            $freelancer = User::findOrFail($hiredApplication->freelancer_id);
+            $freelancer->increment('balance', $escrow->amount);
+
+            // Commit transaction
+            DB::commit();
+
+            return response()->json(['message' => 'Request change and withdrawal successful', 'transaction' => $transaction]);
+        } catch (\Exception $e) {
+            // Rollback transaction in case of errors
+            DB::rollback();
+            Log::error('Request change and withdrawal failed: ' . $e->getMessage());
+            throw ValidationException::withMessages(['request_change' => 'Request change and withdrawal failed: ' . $e->getMessage()]);
+        }
+    } else {
+        throw ValidationException::withMessages(['request_change' => 'Request change cannot be submitted under current job status.']);
     }
+}
 
     private function handleCancel($request_change)
     {

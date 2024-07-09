@@ -105,7 +105,6 @@ class PaymentGatewayController extends Controller
                 'amount_cents' => $amount * 100,  // Convert to cents
                 'currency' => 'EGP',
                 'items' => [],
-                'merchant_order_id' => (string) $jobId  // Linking job ID to the order for tracking
             ]
         ]);
         return json_decode($response->getBody()->getContents());
@@ -149,62 +148,4 @@ class PaymentGatewayController extends Controller
     
         return json_decode($response->getBody()->getContents())->token;
     }
-
-    public function withdraw(Request $request)
-    {
-        $userId = $request->user()->id; // Assuming the user is authenticated and is a freelancer
-        $jobId = $request->job_id;
-    
-        // Check if the job exists and is completed
-        $job = Job::with('hiredApplication')->where('id', $jobId)->where('status', 'completed')->first();
-        if (!$job) {
-            return response()->json(['error' => 'Job not found or not completed'], 404);
-        }
-    
-        // Check if the authenticated user is the hired freelancer for this job
-        $hiredApplication = $job->hiredApplication;
-        if (!$hiredApplication || $hiredApplication->freelancer_id != $userId) {
-            return response()->json(['error' => 'Not authorized to withdraw for this job'], 403);
-        }
-    
-        // Check if there's an escrow for this job
-        $escrow = Escrow::where('job_id', $jobId)->where('status', 'held')->first();
-        if (!$escrow) {
-            return response()->json(['error' => 'No funds to withdraw or already withdrawn'], 404);
-        }
-    
-        // Process the withdrawal
-        try {
-            // Begin transaction
-            DB::beginTransaction();
-    
-            // Update escrow status to released
-            $escrow->update(['status' => 'released']);
-    
-            // Record the transaction
-            $transaction = Transaction::create([
-                'user_id' => $userId,
-                'escrow_id' => $escrow->id,
-                'amount' => $escrow->amount,
-                'status' => 'completed',
-                'paymob_order_id' => 'NA',
-                'type' => 'withdrawal'
-            ]);
-    
-            // Update user balance
-            $user = User::findOrFail($userId);
-            $user->increment('balance', $escrow->amount);
-    
-            // Commit transaction
-            DB::commit();
-    
-            return response()->json(['message' => 'Withdrawal successful', 'transaction' => $transaction]);
-        } catch (\Exception $e) {
-            // Rollback transaction in case of errors
-            DB::rollback();
-            Log::error('Withdrawal failed: ' . $e->getMessage());
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }    
-    
 }

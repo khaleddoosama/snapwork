@@ -96,6 +96,7 @@ Route::middleware('jwt.verify')->group(function () {
 
     // Hire
     Route::put('/hire/{job:slug}/{application:slug}', [ApplicationController::class, 'hire']);
+    Route::delete('/hire/{job:slug}/{application:slug}', [ApplicationController::class, 'unhire']);
 
     // request change
     Route::post('/request-change/{job:slug}/{application:slug}/', [RequestChangeController::class, 'requestChange']);
@@ -126,5 +127,4 @@ Route::middleware('jwt.verify')->group(function () {
 
 Route::prefix('payment')->middleware(['jwt.verify'])->group(function () {
     Route::post('initiate', [PaymentGatewayController::class, 'initiate'])->name('payment.initiate');
-    Route::post('withdraw', [PaymentGatewayController::class, 'withdraw'])->name('payment.withdraw');
 });
