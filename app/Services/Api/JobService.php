@@ -11,9 +11,9 @@ class JobService
     public function getAll($specialization_id)
     {
         if ($specialization_id) {
-            $jobs = Job::with('client', 'specialization')->where('specialization_id', $specialization_id)->paginate(10);
+            $jobs = Job::where('type', 'open')->with('client', 'specialization')->where('specialization_id', $specialization_id)->paginate(10);
         } else {
-            $jobs = Job::with('client', 'specialization')->paginate(10);
+            $jobs = Job::where('type', 'open')->with('client', 'specialization')->paginate(10);
         }
         return $jobs;
     }
